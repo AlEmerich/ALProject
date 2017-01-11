@@ -1,19 +1,11 @@
 package gameframework.moves_rules;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import gameframework.core.Movable;
-import gameframework.moves_rules.IntersectTools;
-import gameframework.moves_rules.SpeedVector;
-import gameframework.moves_rules.SpeedVectorDefaultImpl;
-
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-
 import org.junit.Test;
+
+import java.awt.*;
+
+import static org.junit.Assert.*;
 
 public class IntersectToolsTest implements Movable {
 
