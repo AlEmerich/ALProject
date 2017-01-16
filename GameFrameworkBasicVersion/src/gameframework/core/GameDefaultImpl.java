@@ -1,31 +1,20 @@
 package gameframework.core;
 
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Container;
-import java.awt.Frame;
-import java.awt.GridBagLayout;
-import java.awt.Label;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JPanel;
-
 /**
  * Create a basic game application with menus and displays of lives and score
  */
 public class GameDefaultImpl implements Game, Observer {
-	protected static final int NB_ROWS = 31;
-	protected static final int NB_COLUMNS = 28;
-	protected static final int SPRITE_SIZE = 16;
+	protected static final int NB_ROWS = 10;
+	protected static final int NB_COLUMNS = 15;
+	protected static final int SPRITE_SIZE = 36;
 	public static final int MAX_NUMBER_OF_PLAYER = 4;
 	public static final int NUMBER_OF_LIVES = 1;
 
@@ -98,36 +87,12 @@ public class GameDefaultImpl implements Game, Observer {
 		menuBar.add(game);
 		f.setMenuBar(menuBar);
 
-		start.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				start();
-			}
-		});
-		save.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				save();
-			}
-		});
-		restore.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				restore();
-			}
-		});
-		quit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		pause.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pause();
-			}
-		});
-		resume.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resume();
-			}
-		});
+		start.addActionListener(e -> start());
+		save.addActionListener(e -> save());
+		restore.addActionListener(e -> restore());
+		quit.addActionListener(e -> System.exit(0));
+		pause.addActionListener(e -> pause());
+		resume.addActionListener(e -> resume());
 
 		file.add(start);
 		file.add(save);
