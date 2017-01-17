@@ -8,7 +8,7 @@ import java.awt.Point;
  */
 public class SpeedVectorDefaultImpl implements SpeedVector {
 
-	private static final int DEFAULT_SPEED = 8;
+	private static final int DEFAULT_SPEED = 16;
 	private Point direction;
 	private int speed;
 

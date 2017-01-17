@@ -13,7 +13,10 @@ public class MoveStrategyKeyboard extends KeyAdapter implements MoveStrategy {
 			0));
 
 	public SpeedVector getSpeedVector() {
-		return speedVector;
+		SpeedVector actual = speedVector;
+		speedVector = new SpeedVectorDefaultImpl(new Point(0,
+				0));
+		return actual;
 	}
 
 	@Override

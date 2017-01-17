@@ -88,7 +88,6 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 
 		int totalNbGums = 0;
 
-		System.err.println("HERE");
 		// Filling up the universe with basic non movable entities and inclusion in the universe
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 28; ++j) {

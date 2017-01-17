@@ -3,6 +3,7 @@ package entity;
 import gameframework.core.Drawable;
 import gameframework.core.DrawableImage;
 import gameframework.core.GameEntity;
+import gameframework.core.Overlappable;
 import gameframework.moves_rules.MoveBlocker;
 
 import java.awt.*;
@@ -11,19 +12,24 @@ import java.util.Map;
 /**
  * Created by alaguitard on 17/01/17.
  */
-public class MapEntitySprite implements Drawable,GameEntity{
+public class MapEntitySprite implements Drawable,GameEntity, Overlappable{
     protected static DrawableImage image = null;
 	int x, y;
 	public static final int RENDERING_SIZE = 16;
 	private MapEntityType type;
 
+	@Override
+	public Point getPosition() {
+		return null;
+	}
+
 	public enum MapEntityType{
-		Tree(4,5),
+		Tree(6,4),
 		Land(0,1),
-		RoadVertical(2,0),
-		RoadHorizontal(3,1),
-		RoadLeftBottom(3,0),
-		RoadLeftUp(2,1),
+		RoadVertical(0,2),
+		RoadHorizontal(1,3),
+		RoadLeftBottom(0,3),
+		RoadLeftUp(1,2),
 		RoadRightUp(2,2),
 		RoadRightBottom(2,3)
 		;
@@ -37,7 +43,8 @@ public class MapEntitySprite implements Drawable,GameEntity{
 	}
 
 	public MapEntitySprite(Canvas defaultCanvas, int xx, int yy, MapEntityType t) {
-		image = new DrawableImage("images/map1.gif", defaultCanvas);
+		if(image == null)
+			image = new DrawableImage("map1.png", defaultCanvas);
 		x = xx;
 		y = yy;
 		this.type = t;

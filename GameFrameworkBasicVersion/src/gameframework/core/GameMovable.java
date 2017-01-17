@@ -43,6 +43,7 @@ public abstract class GameMovable implements Movable {
 				* speedVector.getSpeed(), (int) speedVector.getDirection()
 				.getY() * speedVector.getSpeed());
 		oneStepMoveAddedBehavior();
+
 	}
 
 	public abstract void oneStepMoveAddedBehavior();

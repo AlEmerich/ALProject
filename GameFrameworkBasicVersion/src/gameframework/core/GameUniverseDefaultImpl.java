@@ -4,6 +4,8 @@ import gameframework.moves_rules.MoveBlocker;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.OverlapProcessor;
 
+import java.awt.*;
+import java.util.Currency;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
