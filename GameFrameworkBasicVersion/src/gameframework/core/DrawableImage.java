@@ -1,13 +1,6 @@
 package gameframework.core;
 
-import util.ImageUtility;
-
-import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
-import java.io.File;
+import java.awt.*;
 
 public class DrawableImage implements Drawable {
 	protected Image image;
@@ -17,7 +10,7 @@ public class DrawableImage implements Drawable {
 		this.canvas = canvas;
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		// Implement to work on intelij
-		image = toolkit.createImage(ImageUtility.getResource(filename));
+		image = toolkit.createImage(filename);
 		MediaTracker tracker = new MediaTracker(canvas);
 		tracker.addImage(image, 0);
 		try {

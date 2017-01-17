@@ -4,6 +4,7 @@ import game.SpriteManagerSoldierImpl;
 import gameframework.core.*;
 import soldier.core.Unit;
 import soldier.units.UnitCenturion;
+import util.ImageUtility;
 
 import java.awt.*;
 
@@ -20,7 +21,7 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
 
     public SoldierEntity(Canvas canvas)
     {
-        spriteManager = new SpriteManagerSoldierImpl("soldier2.png", canvas);
+        spriteManager = new SpriteManagerSoldierImpl(ImageUtility.getResource("soldier2.png"), canvas);
         unit = new UnitCenturion("Billy");
         spriteManager.setTypes(
                 //

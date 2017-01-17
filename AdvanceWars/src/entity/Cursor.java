@@ -2,6 +2,7 @@ package entity;
 
 import gameframework.core.*;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
+import util.ImageUtility;
 
 import java.awt.*;
 
@@ -15,7 +16,7 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
 
     public Cursor(Canvas canvas)
     {
-        image = new DrawableImage("cursor.png", canvas);
+        image = new DrawableImage(ImageUtility.getResource("cursor.png"), canvas);
     }
 
     @Override
