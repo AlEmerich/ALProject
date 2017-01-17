@@ -1,5 +1,6 @@
 package levels;
 
+import entity.MapEntitySprite;
 import entity.SoldierRulesApplier;
 import gameframework.core.*;
 import gameframework.moves_rules.*;
