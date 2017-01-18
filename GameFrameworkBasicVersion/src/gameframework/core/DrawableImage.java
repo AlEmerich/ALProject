@@ -9,7 +9,6 @@ public class DrawableImage implements Drawable {
 	public DrawableImage(String filename, Canvas canvas) {
 		this.canvas = canvas;
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		// Implement to work on intelij
 		image = toolkit.createImage(filename);
 		MediaTracker tracker = new MediaTracker(canvas);
 		tracker.addImage(image, 0);

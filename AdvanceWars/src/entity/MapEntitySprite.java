@@ -19,7 +19,7 @@ public class MapEntitySprite implements Drawable,GameEntity, Overlappable{
 
 	@Override
 	public Point getPosition() {
-		return null;
+		return (new Point(x, y));
 	}
 
 	public enum MapEntityType{
@@ -77,10 +77,6 @@ public class MapEntitySprite implements Drawable,GameEntity, Overlappable{
 			g.drawImage(image.getImage(), x, y, x+RENDERING_SIZE, y+RENDERING_SIZE
 				, type.x*RENDERING_SIZE, type.y*RENDERING_SIZE,
 				(type.x+1)*RENDERING_SIZE,(type.y+1)*RENDERING_SIZE, null);
-	}
-
-	public Point getPos() {
-		return (new Point(x, y));
 	}
 
 	public Rectangle getBoundingBox() {

@@ -1,7 +1,9 @@
 package entity;
 
+import game.MenuSoldierStateFrame;
 import gameframework.core.*;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
+import soldier.core.Unit;
 import util.ImageUtility;
 
 import java.awt.*;
@@ -13,12 +15,18 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
         Overlappable {
     private DrawableImage image;
     private boolean testOverlap = true;
+    private MenuSoldierStateFrame soldierFrame;
 
     public Cursor(Canvas canvas)
     {
         image = new DrawableImage(ImageUtility.getResource("cursor.png"), canvas);
+        this.soldierFrame = new MenuSoldierStateFrame((Frame) canvas.getParent());
     }
 
+    public SoldierEntity getUnit()
+    {
+        return soldierFrame.getUnit();
+    }
     @Override
     public void draw(Graphics g) {
         g.drawImage(image.getImage(), getPosition().x, getPosition().y, null);
@@ -30,6 +38,7 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
         if(this.getSpeedVector().getDirection().getX() != 0 ||
                 this.getSpeedVector().getDirection().getY() != 0){
             testOverlap = true;
+            this.soldierFrame.setVisible(false);
         }
         this.setSpeedVector(SpeedVectorDefaultImpl.createNullVector());
     }
@@ -37,6 +46,12 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
     @Override
     public Rectangle getBoundingBox() {
         return (new Rectangle(0, 0, MapEntitySprite.RENDERING_SIZE, MapEntitySprite.RENDERING_SIZE));
+    }
+
+    public void showSoldierInformation(SoldierEntity unit)
+    {
+        this.soldierFrame.setUnit(unit);
+        this.soldierFrame.setVisible(true);
     }
 
     public void setNotTestOverlap()

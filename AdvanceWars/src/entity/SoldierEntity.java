@@ -15,14 +15,13 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
         Overlappable {
 
     private SpriteManager spriteManager;
-
     private Unit unit;
     protected boolean movable = true;
 
-    public SoldierEntity(Canvas canvas)
+    public SoldierEntity(Canvas canvas, String name)
     {
         spriteManager = new SpriteManagerSoldierImpl(ImageUtility.getResource("soldier2.png"), canvas);
-        unit = new UnitCenturion("Billy");
+        unit = new UnitCenturion(name);
         spriteManager.setTypes(
                 //
                 "Idle",//

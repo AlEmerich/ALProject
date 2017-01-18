@@ -2,8 +2,10 @@ package levels;
 
 import entity.Cursor;
 import entity.*;
+import game.GameUniverseBoardImpl;
 import gameframework.core.*;
 import gameframework.moves_rules.*;
+import rules.CursorStrategyKeyboard;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -84,10 +86,10 @@ public class TestLevel extends GameLevelDefaultImpl{
         MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
         OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
-        OverlapRulesApplier overlapRules = new CursorRulesApplier(universe);
+        OverlapRulesApplier overlapRules = new CursorRulesApplier(universe,canvas);
         overlapProcessor.setOverlapRules(overlapRules);
 
-        universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
+        universe = new GameUniverseBoardImpl(moveBlockerChecker, overlapProcessor);
         overlapRules.setUniverse(universe);
 
         gameBoard = new GameUniverseViewPortDefaultImpl(g.getCanvas(),universe);
@@ -165,7 +167,6 @@ public class TestLevel extends GameLevelDefaultImpl{
                 if (tab[y][x] == 18)
                     universe.addGameEntity(new MapEntitySprite(canvas,
                             x*SPRITE_SIZE, y*SPRITE_SIZE, MapEntitySprite.MapEntityType.Water));
-
                 if (tab[y][x] == 19)
                     universe.addGameEntity(new MapEntitySprite(canvas,
                             x*SPRITE_SIZE, y*SPRITE_SIZE, MapEntitySprite.MapEntityType.WaterOut));
@@ -184,7 +185,7 @@ public class TestLevel extends GameLevelDefaultImpl{
 
         Cursor c = new Cursor(canvas);
         GameMovableDriverDefaultImpl cursorDriver = new GameMovableDriverDefaultImpl();
-		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
+		MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,c);
 		cursorDriver.setStrategy(keyStr);
 		cursorDriver.setmoveBlockerChecker(moveBlockerChecker);
 		canvas.addKeyListener(keyStr);
@@ -192,6 +193,12 @@ public class TestLevel extends GameLevelDefaultImpl{
 		c.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 		universe.addGameEntity(c);
 
-        universe.addGameEntity(new SoldierEntity(canvas));
+        SoldierEntity s = new SoldierEntity(canvas,"Billy");
+        s.setPosition(new Point(10 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+        universe.addGameEntity(s);
+
+        SoldierEntity s2 = new SoldierEntity(canvas,"Joe");
+        s2.setPosition(new Point(7 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+        universe.addGameEntity(s2);
     }
 }

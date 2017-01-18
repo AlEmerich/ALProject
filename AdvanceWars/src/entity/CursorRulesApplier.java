@@ -1,10 +1,12 @@
 package entity;
 
+import game.MenuSoldierStateFrame;
 import gameframework.core.GameUniverse;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplier;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
 
+import java.awt.*;
 import java.util.Vector;
 
 /**
@@ -12,8 +14,9 @@ import java.util.Vector;
  */
 public class CursorRulesApplier extends OverlapRulesApplierDefaultImpl {
     protected GameUniverse universe;
+    protected MenuSoldierStateFrame stateFrame;
 
-    public CursorRulesApplier(GameUniverse u)
+    public CursorRulesApplier(GameUniverse u, Canvas canvas)
     {
         this.universe = u;
     }
@@ -33,7 +36,8 @@ public class CursorRulesApplier extends OverlapRulesApplierDefaultImpl {
     {
         if(cursor.isToTestOverlap())
         {
-            System.err.println("Afficher menu état du soldat "+soldier.getUnit().getName());
+            cursor.showSoldierInformation(soldier);
+
             cursor.setNotTestOverlap();
         }
     }
