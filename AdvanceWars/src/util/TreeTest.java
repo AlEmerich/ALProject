@@ -16,7 +16,7 @@ public class TreeTest {
     @Before
     public void setup()
     {
-        keySearch = new Tree<>("5",2);
+        keySearch = new Tree<>(true,"5",2);
         keySearch.put("78aa;",null);
         keySearch.put("57",null);
     }

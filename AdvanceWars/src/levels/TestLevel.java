@@ -1,7 +1,9 @@
 package levels;
 
 import entity.Cursor;
-import entity.*;
+import entity.EmptyBlocker;
+import entity.MapEntitySprite;
+import entity.SoldierEntity;
 import game.GameUniverseBoardImpl;
 import gameframework.core.*;
 import gameframework.moves_rules.*;
@@ -185,8 +187,10 @@ public class TestLevel extends GameLevelDefaultImpl{
             universe.addGameEntity(new EmptyBlocker(x*SPRITE_SIZE,y*SPRITE_SIZE));
 
         Cursor c = new Cursor(canvas);
+
         GameMovableDriverDefaultImpl cursorDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,c);
+        ((CursorRulesApplier) overlapRules).setStrategyKeyboard( (CursorStrategyKeyboard) keyStr);
 		cursorDriver.setStrategy(keyStr);
 		cursorDriver.setmoveBlockerChecker(moveBlockerChecker);
 		canvas.addKeyListener(keyStr);

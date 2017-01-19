@@ -1,6 +1,7 @@
 package rules;
 
 import entity.Cursor;
+import entity.MapEntitySprite;
 import entity.SoldierEntity;
 import gameframework.core.GameUniverse;
 import gameframework.moves_rules.Overlap;
@@ -13,10 +14,17 @@ import java.util.Vector;
  */
 public class CursorRulesApplier extends OverlapRulesApplierDefaultImpl {
     protected GameUniverse universe;
+    private CursorStrategyKeyboard strategyKeyboard;
 
     public CursorRulesApplier(GameUniverse u)
     {
         this.universe = u;
+        this.strategyKeyboard = strategyKeyboard;
+    }
+
+    public void setStrategyKeyboard(CursorStrategyKeyboard strategyKeyboard)
+    {
+        this.strategyKeyboard = strategyKeyboard;
     }
 
     @Override
@@ -37,5 +45,13 @@ public class CursorRulesApplier extends OverlapRulesApplierDefaultImpl {
             cursor.showSoldierInformation(soldier);
             cursor.setNotTestOverlap();
         }
+    }
+
+    public void overlapRule(Cursor cursor, MapEntitySprite map)
+    {
+        if(map.getFilter() != 0)
+            strategyKeyboard.colorize();
+        else
+            strategyKeyboard.uncolorize();
     }
 }

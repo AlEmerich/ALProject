@@ -39,13 +39,13 @@ import java.util.TreeMap;
         }
 
         @Override
-        public void removeFastestWay(Map map) {
+        public void removeFastestWay(String destKey) {
 
         }
 
         @Override
-        public Map setFastestWay(String key) {
-            return null;
+        public boolean setFastestWay(String sourceKey, String destkey) {
+            return true;
         }
 
         @Override

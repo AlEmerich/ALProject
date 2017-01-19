@@ -5,32 +5,37 @@ import java.util.*;
 /**
  * Created by alan on 18/01/17.
  */
-public class Tree<K,T> implements Map {
+public class Tree<K,T> implements Map{
     public static HashMap<String,Tree> memory = new HashMap<>();
 
     public List<Tree<K,T>> children;
     public K key;
     public Tree<K,T> parent;
-    private int levelMax;
+    public int level;
 
-    public Tree(K rootKey,int levelMax) {
-        this.key = rootKey;
+    public boolean root;
+
+    public Tree(boolean root,K key, int level) {
+        this.root = root;
+        this.key = key;
         this.parent = null;
-        this.levelMax = levelMax;
+        this.level = level;
         this.children = new ArrayList<>();
+
+        memory.put((String) key,this);
     }
 
     public Tree getAlreadyIn(String key)
     {
         return memory.get(key);
     }
-    public Tree<K,T> createNode(K key, int movment)
+
+    private Tree<K,T> createNode(K key, int movment)
     {
-        Tree ancient = (Tree) this.memory.get(key);
+        Tree ancient = this.memory.get(key);
         Tree<K,T> n = ancient;
         if(ancient == null) {
-            n = new Tree<>(key,movment-1);
-            memory.put((String) key,n);
+            n = new Tree<>(false,key,movment);
         }
 
         return n;
@@ -44,29 +49,40 @@ public class Tree<K,T> implements Map {
     @Override
     public String toString()
     {
-        String ret= (String) this.key;
+        String ret = "";
+        if(this.parent != null)
+            ret += "("+this.parent.key+")->";
+        ret += this.key+":level="+this.level;
+
+        TreeSet set = new TreeSet<>();
+        set.add(this.key);
         for(Tree<K, T> c : this.children)
-            ret += recDisplayNode(c,0);
+            ret += c.recDisplayNode(set,c,this.level);
 
         return ret;
     }
 
-    private String recDisplayNode(Tree<K, T> n, int tab)
+    private String recDisplayNode(Set<String> alreadyPrint, Tree<K, T> n, int tab)
     {
+        alreadyPrint.add((String) this.key);
         String ret = "\n|";
-        for(int j=0;j<tab;j++)
+        for(int j=0;j<tab-this.level;j++)
             ret+="-";
-        ret+=n.key+"";
+
+        if(this.parent != null)
+            ret += "("+n.parent.key+")->";
+        ret+=n.key+":level="+this.level;
 
         for(Tree<K, T> c : n.children)
-            ret += recDisplayNode(c,tab+1);
+            if(!alreadyPrint.contains(c.key))
+                ret += c.recDisplayNode(alreadyPrint,c,tab);
 
         return ret;
     }
 
     @Override
     public int size() {
-        return levelMax;
+        return level;
     }
 
     @Override
@@ -84,7 +100,7 @@ public class Tree<K,T> implements Map {
         {
             for(Tree<K, T> n : this.children)
             {
-                if(this.containsNodeKey(n,key,this.levelMax))
+                if(this.containsNodeKey(n,key,this.level))
                     return true;
             }
         }
@@ -92,9 +108,9 @@ public class Tree<K,T> implements Map {
         return false;
     }
 
-    private boolean containsNodeKey(Tree<K, T> current, K key,int levelMax)
+    private boolean containsNodeKey(Tree<K, T> current, K key,int level)
     {
-        if(levelMax > 0)
+        if(level > 0)
         {
             if(current.key.equals(key))
                 return true;
@@ -102,7 +118,7 @@ public class Tree<K,T> implements Map {
             if(!current.isLeaf())
             {
                 for(Tree<K, T> n : current.children) {
-                    if(this.containsNodeKey(n,key,levelMax-1))
+                    if(this.containsNodeKey(n,key,level-1))
                         return true;
                 }
             }
@@ -121,7 +137,7 @@ public class Tree<K,T> implements Map {
         {
             for(Tree<K, T> n : this.children)
             {
-                if(this.containsNodeValue(n,value,this.levelMax))
+                if(this.containsNodeValue(n,value,this.level))
                     return true;
             }
         }
@@ -151,26 +167,19 @@ public class Tree<K,T> implements Map {
     @Override
     public Object get(Object o) {
         String key = (String) o;
-        if(this.key.equals(key))
-            return this;
-        else
-        {
-            for(Tree t : this.children)
-            {
-                Tree ret = (Tree) t.get(key);
-                if(ret != null)
-                    return ret;
-            }
-        }
-        return null;
+        return getAlreadyIn(key);
     }
 
     @Override
     public Object put(Object o, Object o2) {
+
         K key = (K) o;
-        Tree t = this.createNode(key,this.levelMax);
+        int level = (int) o2;
+
+        Tree t = this.createNode(key,level);
         this.children.add(t);
-        t.parent = this;
+        if(!t.root)
+            t.parent = this;
 
         return t;
     }
@@ -188,6 +197,10 @@ public class Tree<K,T> implements Map {
     @Override
     public void clear() {
 
+        this.key = null;
+        this.children.clear();
+        this.parent = null;
+
     }
 
     @Override
@@ -204,4 +217,5 @@ public class Tree<K,T> implements Map {
     public Set<Entry> entrySet() {
         return null;
     }
+
 }

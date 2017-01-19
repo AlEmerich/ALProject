@@ -38,9 +38,9 @@ public interface PathFinding {
      */
     Map getPossibleWays(GameEntity g);
 
-    void removeFastestWay(Map map);
+    void removeFastestWay(String map);
 
-    Map setFastestWay(String key);
+    boolean setFastestWay(String sourceKey,String destkey);
 
     /**
      * Reset the collection

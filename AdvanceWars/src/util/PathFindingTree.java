@@ -28,20 +28,16 @@ public class PathFindingTree implements PathFinding{
     {
         SoldierEntity unit = (SoldierEntity) g;
 
-
-        String key = PathFinding.formatKey(unit);
         String mapWhereUnit = PathFinding.formatKey(unit);
 
         // Just map tiles in tree, not unit
         for(GameEntity ge : board.get(mapWhereUnit))
             if(ge instanceof MapEntitySprite)
-                this.paths = new Tree<>(key, unit.getUnit().getMovmentPoint());
+                this.paths = new Tree<>(true,mapWhereUnit, unit.getUnit().getMovmentPoint());
 
-        recursivePathFinderTree(this.paths,unit.getUnit().getMovmentPoint(),board);
+        recursivePathFinderTree(this.paths,unit.getUnit().getMovmentPoint()-1,board);
 
         return this.paths;
-        //displayTreeWays();
-        //this.paths.displayTree();
     }
 
     @Override
@@ -52,15 +48,18 @@ public class PathFindingTree implements PathFinding{
 
         for(Tree n : this.paths.children)
             resetRec(n);
+        Tree.memory.clear();
+        this.paths.clear();
     }
 
     private void resetRec(Tree t)
     {
-
-        this.getMapFromCase((String) t.key).setFilter(0);
-
-        for(Tree n : (List<Tree>) t.children)
-            resetRec(n);
+        if(this.getMapFromCase((String) t.key).getFilter() != 0)
+        {
+            this.getMapFromCase((String) t.key).setFilter(0);
+            for(Tree n : (List<Tree>) t.children)
+                resetRec(n);
+        }
     }
 
     /**
@@ -76,7 +75,7 @@ public class PathFindingTree implements PathFinding{
         int xk = Integer.parseInt(currentKey[0]);
         int yk = Integer.parseInt(currentKey[1]);
 
-        if(currentLevel-- > 0)
+        if(currentLevel >= 0)
         {
             for(Direction dir : Direction.values())
             {
@@ -97,14 +96,19 @@ public class PathFindingTree implements PathFinding{
                 }
 
                 if(overlap) {
+                    Tree children;
                     if(((MapEntitySprite)data).getFilter() == 0)
                     {
-                        Tree children = (Tree) n.put(key,null);
+                        children = (Tree) n.put(key,currentLevel);
                         ((MapEntitySprite) data).setFilter(1);
-                        recursivePathFinderTree(children,currentLevel,board);
                     }
                     else
-                        recursivePathFinderTree(this.paths.getAlreadyIn(key),currentLevel,board);
+                    {
+                        children = this.paths.getAlreadyIn(key);
+                        if(children.level < currentLevel)
+                            children.level = currentLevel;
+                    }
+                    recursivePathFinderTree(children,currentLevel-1,board);
                 }
             }
         }
@@ -115,27 +119,30 @@ public class PathFindingTree implements PathFinding{
      * @param destKey the formatted coordinates of the position cursor.
      * @return true if the cursor is in the field of possibilities, false if not.
      */
-    public Map setFastestWay(String destKey)
+    public boolean setFastestWay(String sourceKey,String destKey)
     {
         Tree destNode = (Tree) this.paths.get(destKey);
 
-        Tree retNode = destNode;
+        if(destNode == null)
+            return false;
 
         MapEntitySprite data;
-        while(destNode != null && (data = this.getMapFromCase(destKey)) != null) {
+        while(destNode != null && (data = this.getMapFromCase((String) destNode.key)) != null) {
             data.setFilter(2);
             destNode = destNode.parent;
         }
-        return retNode;
+        return true;
     }
 
-    public void removeFastestWay(Map destNode)
+    public void removeFastestWay(String destKey)
     {
-        Tree tree = (Tree) destNode;
+        Tree destNode = (Tree) this.paths.get(destKey);
         MapEntitySprite data;
-        while(destNode != null && (data = this.getMapFromCase((String) ((Tree) destNode).key)) != null) {
+
+        // To the source
+        while(destNode != null && (data = this.getMapFromCase((String) destNode.key)) != null) {
             data.setFilter(1);
-            destNode = tree.parent;
+            destNode = destNode.parent;
         }
     }
 
@@ -152,4 +159,5 @@ public class PathFindingTree implements PathFinding{
     {
         return this.paths.toString();
     }
+
 }
