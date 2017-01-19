@@ -4,9 +4,9 @@
  */
 package soldier.core;
 
-import java.util.Iterator;
-
 import observer_util.Observable;
+
+import java.util.Iterator;
 
 
 public interface Unit extends Observable<Unit> {

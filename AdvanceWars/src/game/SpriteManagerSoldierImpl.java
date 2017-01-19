@@ -4,8 +4,8 @@ import entity.MapEntitySprite;
 import gameframework.core.DrawableImage;
 import gameframework.core.SpriteManager;
 
+import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created by alaguitard on 17/01/17.
@@ -41,6 +41,11 @@ public class SpriteManagerSoldierImpl implements SpriteManager {
         this.image = new DrawableImage(filename, canvas);
         this.currentState = TypeSprite.Left;
         this.spriteNumber = 0;
+    }
+
+    public ImageIcon getImageIcon()
+    {
+        return new ImageIcon();
     }
 
     @Override

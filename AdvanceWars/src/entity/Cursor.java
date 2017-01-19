@@ -3,7 +3,6 @@ package entity;
 import game.MenuSoldierStateFrame;
 import gameframework.core.*;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
-import soldier.core.Unit;
 import util.ImageUtility;
 
 import java.awt.*;
@@ -27,11 +26,11 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
     {
         return soldierFrame.getUnit();
     }
+
     @Override
     public void draw(Graphics g) {
         g.drawImage(image.getImage(), getPosition().x, getPosition().y, null);
     }
-
 
     @Override
     public void oneStepMoveAddedBehavior() {

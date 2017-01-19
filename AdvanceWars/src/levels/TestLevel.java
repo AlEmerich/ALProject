@@ -5,6 +5,7 @@ import entity.*;
 import game.GameUniverseBoardImpl;
 import gameframework.core.*;
 import gameframework.moves_rules.*;
+import rules.CursorRulesApplier;
 import rules.CursorStrategyKeyboard;
 
 import java.awt.*;
@@ -86,7 +87,7 @@ public class TestLevel extends GameLevelDefaultImpl{
         MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
         OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
-        OverlapRulesApplier overlapRules = new CursorRulesApplier(universe,canvas);
+        OverlapRulesApplier overlapRules = new CursorRulesApplier(universe);
         overlapProcessor.setOverlapRules(overlapRules);
 
         universe = new GameUniverseBoardImpl(moveBlockerChecker, overlapProcessor);

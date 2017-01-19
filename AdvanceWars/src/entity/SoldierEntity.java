@@ -16,11 +16,13 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
 
     private SpriteManager spriteManager;
     private Unit unit;
+    private String filenameImage = "soldier2.png";
+
     protected boolean movable = true;
 
     public SoldierEntity(Canvas canvas, String name)
     {
-        spriteManager = new SpriteManagerSoldierImpl(ImageUtility.getResource("soldier2.png"), canvas);
+        spriteManager = new SpriteManagerSoldierImpl(ImageUtility.getResource(filenameImage), canvas);
         unit = new UnitCenturion(name);
         spriteManager.setTypes(
                 //
@@ -70,5 +72,14 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
     public Unit getUnit()
     {
         return unit;
+    }
+
+    public String getFilenameImage()
+    {
+        return "bigSoldier.png";
+    }
+    public String toString()
+    {
+        return "Soldier "+this.unit.getName();
     }
 }
