@@ -34,7 +34,7 @@ import java.util.TreeMap;
             this.tree = new TreeMap<>();
 
             this.tree.put(key, new ArrayList<>());
-            recursivePathFinderList(key,unit.getUnit().getMovmentPoint(),board);
+            recursivePathFinderList(key,unit.getUnit().getMovementPoint(),board);
 
             return this.tree;
         }

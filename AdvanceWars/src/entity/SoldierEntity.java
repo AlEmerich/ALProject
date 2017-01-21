@@ -5,7 +5,6 @@ import gameframework.core.*;
 import gameframework.moves_rules.SpeedVector;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
 import soldier.core.Unit;
-import soldier.units.UnitCenturion;
 import util.ImageUtility;
 import util.PathFinding;
 
@@ -26,10 +25,10 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
 
     protected boolean movable = true;
 
-    public SoldierEntity(Canvas canvas, String name)
+    public SoldierEntity(Canvas canvas,Unit unit)
     {
         spriteManager = new SpriteManagerSoldierImpl(ImageUtility.getResource(filenameImage), canvas);
-        unit = new UnitCenturion(name);
+        this.unit = unit;
         spriteManager.setTypes(
                 //
                 "Idle",//
@@ -57,11 +56,13 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
                 PathFinding.Direction d = PathFinding.getDirection(to,from);
 
                 if(d != null) {
-
                     this.setSpeedVector(new SpeedVectorDefaultImpl(new Point(d.x,d.y)));
+                    this.getUnit().oneStep();
                 }
+
             }
             this.toGoThrough.remove(this.toGoThrough.size()-1);
+
         }
         else
             this.setSpeedVector(SpeedVectorDefaultImpl.createNullVector());
@@ -117,6 +118,10 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
         return unit;
     }
 
+    public void setUnit(Unit u)
+    {
+        this.unit = u;
+    }
     public String getFilenameImage()
     {
         return "bigSoldier.png";

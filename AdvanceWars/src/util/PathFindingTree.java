@@ -35,9 +35,9 @@ public class PathFindingTree implements PathFinding{
         // Just map tiles in tree, not unit
         for(GameEntity ge : board.get(mapWhereUnit))
             if(ge instanceof MapEntitySprite)
-                this.paths = new Tree<>(true,mapWhereUnit, unit.getUnit().getMovmentPoint());
+                this.paths = new Tree<>(true,mapWhereUnit, unit.getUnit().getMovementPoint());
 
-        recursivePathFinderTree(this.paths,unit.getUnit().getMovmentPoint()-1,board);
+        recursivePathFinderTree(this.paths,unit.getUnit().getMovementPoint()-1,board);
 
         return this.paths;
     }
@@ -48,6 +48,7 @@ public class PathFindingTree implements PathFinding{
         if(this.paths == null)
             return;
 
+        System.err.println(this.paths.key);
         this.getMapFromCase(this.paths.key).setFilter(MapFilter.NONE);
 
         for(Tree n : this.paths.children)

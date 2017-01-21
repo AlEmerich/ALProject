@@ -1,6 +1,7 @@
 package game;
 
 import entity.SoldierEntity;
+import soldier.util.AttributUnitVisitor;
 import util.ImageUtility;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class MenuSoldierStateFrame extends JDialog {
 
     JLabel titleLabel;
     JLabel iconPanel;
+    JPanel listPanel;
 
     public MenuSoldierStateFrame(Frame parent)
     {
@@ -58,32 +60,48 @@ public class MenuSoldierStateFrame extends JDialog {
             }
         });
 
-        // Image
-        JPanel westPanel = new JPanel();
-        this.iconPanel = new JLabel();
-        westPanel.add(iconPanel);
-        this.add(westPanel);
+        this.setLayout(new BorderLayout());
 
         // Title
         JPanel northPanel = new JPanel();
         northPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.titleLabel = new JLabel();
         northPanel.add(titleLabel);
-        this.add(northPanel);
+        this.add(northPanel,BorderLayout.NORTH);
+
+        // Image
+        JPanel westPanel = new JPanel();
+        this.iconPanel = new JLabel();
+        westPanel.add(iconPanel);
+        this.add(westPanel,BorderLayout.WEST);
+
+        this.listPanel = new JPanel();
+        this.add(this.listPanel,BorderLayout.CENTER);
     }
 
     public void setUnit(SoldierEntity u)
     {
+        this.listPanel.removeAll();
         this.setTitle(u.getUnit().getName());
         this.unit = u;
-        this.setLayout(new GridLayout(1,0));
 
         // Image
         ImageIcon icon = new ImageIcon(ImageUtility.getResource(this.getUnit().getFilenameImage()));
         this.iconPanel.setIcon(icon);
 
         // Title
-        this.titleLabel.setText(this.unit.getUnit().getName());
+
+        AttributUnitVisitor visitor = new AttributUnitVisitor();
+        this.unit.getUnit().accept(visitor);
+        this.titleLabel.setText(this.unit.getUnit().getName()+" A "+ visitor.attack
+                + " HP " +visitor.health
+                + " MP "+ visitor.movementPoint+"/"+visitor.maxMovement+"\n");
+
+        for(String s : visitor.soldiers)
+        {
+            this.listPanel.setLayout(new GridLayout(0,1));
+            this.listPanel.add(new JLabel(s));
+        }
     }
 
     public SoldierEntity getUnit()

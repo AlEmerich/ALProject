@@ -1,6 +1,6 @@
 /**
  * D. Auber & P. Narbel
- * Solution TD Architecture Logicielle 2016 Université Bordeaux.
+ * Solution TD Architecture Logicielle 2016 Universitï¿½ Bordeaux.
  */
 package soldier.units;
 
@@ -11,9 +11,15 @@ import soldier.core.Weapon;
 
 public class UnitCenturion extends UnitInfantry {
 
+	private static int MAX_MOVEMENT = 1;
+
 	public UnitCenturion(String soldierName) {
 		super(soldierName, new BehaviorSoldierStd(15, 100));
+		this.currentMovementPoint = MAX_MOVEMENT;
 	}
+
+	@Override
+	public int getMaxMovementPoint(){ return MAX_MOVEMENT; }
 
 	/**
 	 * A Centurion can have at most two equipments

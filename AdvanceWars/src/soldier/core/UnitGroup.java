@@ -1,17 +1,15 @@
 /**
  * D. Auber & P. Narbel
- * Solution TD Architecture Logicielle 2016 Université Bordeaux.
+ * Solution TD Architecture Logicielle 2016 Universitï¿½ Bordeaux.
  */
 package soldier.core;
 
+import observer_util.ObservableAbstract;
+
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-
-import observer_util.ObservableAbstract;
 
 public class UnitGroup extends ObservableAbstract<Unit> 
                        implements Unit {
@@ -21,14 +19,11 @@ public class UnitGroup extends ObservableAbstract<Unit>
 
 	public UnitGroup(String name) {
 		this.name = name;
-		units = new TreeSet<Unit>(new Comparator<Unit>() {
-			@Override
-			public int compare(Unit o1, Unit o2) {
-				if (o1.getName().compareTo(o2.getName()) == 0)
-					return o1.hashCode() - o2.hashCode();
-				else
-					return o1.getName().compareTo(o2.getName());
-			}
+		units = new TreeSet<>((o1, o2) -> {
+			if (o1.getName().compareTo(o2.getName()) == 0)
+				return o1.hashCode() - o2.hashCode();
+			else
+				return o1.getName().compareTo(o2.getName());
 		});
 	}
 
@@ -88,6 +83,34 @@ public class UnitGroup extends ObservableAbstract<Unit>
 				sum += u.strike();
 		}
 		return sum;
+	}
+
+	@Override
+	public int getMaxMovementPoint()
+	{
+		int max=0;
+		int tmp = 0;
+		for (Iterator<Unit> it = subUnits(); it.hasNext(); tmp = it.next().getMaxMovementPoint())
+			if(tmp > max) max = tmp;
+		return max;
+	}
+
+	/**
+	 *
+	 * @return the highest movement point on the group.
+	 */
+	@Override
+	public int getMovementPoint() {
+		int max=0;
+		int tmp = 0;
+		for (Iterator<Unit> it = subUnits(); it.hasNext(); tmp = it.next().getMovementPoint())
+			if(tmp > max) max = tmp;
+		return max;
+	}
+
+	@Override
+	public void oneStep() {
+		for (Iterator<Unit> it = subUnits(); it.hasNext(); it.next().oneStep());
 	}
 
 	@Override

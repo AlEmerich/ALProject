@@ -19,10 +19,10 @@ public interface Unit extends Observable<Unit> {
 	public void heal();
 	public float parry(float force); 
 	public float strike();
-	default int getMovmentPoint(){
-		return 5;
-	}
 
+	default int getMaxMovementPoint(){return 5;}
+	int getMovementPoint();
+	void oneStep();
 	/**
 	 * Behavior extensions
 	 */

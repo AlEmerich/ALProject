@@ -4,6 +4,8 @@ import entity.*;
 import gameframework.core.GameUniverse;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
+import soldier.core.Unit;
+import soldier.core.UnitGroup;
 
 import java.util.Vector;
 
@@ -17,7 +19,6 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
     public OverlapSoldierRules(GameUniverse u)
     {
         this.universe = u;
-        this.strategyKeyboard = strategyKeyboard;
     }
 
     public void setStrategyKeyboard(CursorStrategyKeyboard strategyKeyboard)
@@ -50,7 +51,29 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
         if(map.getFilter() != MapFilter.NONE)
             strategyKeyboard.colorize();
         else
-            if(cursor.getMode() == CursorMode.MOVE_SOLDIER)
-                strategyKeyboard.uncolorize();
+            strategyKeyboard.uncolorize();
+    }
+
+    public void overlapRule(SoldierEntity soldier,SoldierEntity soldier2)
+    {
+        if(soldier2.getUnit() instanceof UnitGroup)
+        {
+            soldier2.getUnit().addUnit(soldier.getUnit());
+            this.universe.removeGameEntity(soldier);
+        }
+        else if(soldier.getUnit() instanceof UnitGroup)
+        {
+            soldier.getUnit().addUnit(soldier2.getUnit());
+            this.universe.removeGameEntity(soldier2);
+        }
+        else
+        {
+            Unit groupUnit = new UnitGroup(soldier.getUnit().getName());
+            groupUnit.addUnit(soldier.getUnit());
+            groupUnit.addUnit(soldier2.getUnit());
+            soldier.setUnit(groupUnit);
+            this.universe.removeGameEntity(soldier2);
+        }
+
     }
 }

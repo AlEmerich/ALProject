@@ -1,6 +1,6 @@
 /**
  * D. Auber & P. Narbel
- * Solution TD Architecture Logicielle 2016 Université Bordeaux.
+ * Solution TD Architecture Logicielle 2016 Universitï¿½ Bordeaux.
  */
 package soldier.units;
 
@@ -12,9 +12,15 @@ import soldier.core.Weapon;
 
 public class UnitHorseMan extends UnitRider {
 
+	private static int MAX_MOVEMENT = 8;
+
 	public UnitHorseMan(String soldierName) {
 		super(soldierName, new BehaviorSoldierStd(20, 120));
+		this.currentMovementPoint = MAX_MOVEMENT;
 	}
+
+	@Override
+	public int getMaxMovementPoint(){ return MAX_MOVEMENT; }
 
 	@Override
 	public void accept(UnitVisitor v) {

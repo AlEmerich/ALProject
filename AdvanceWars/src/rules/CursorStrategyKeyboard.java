@@ -17,7 +17,7 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
 
     private PathFinding pathFinder;
     private Cursor cursor;
-    private List<String> drawnPath;
+    private List<String> drawnPath = null;
     private String destinationKey;
 
     private boolean cursorMoved =false;
@@ -40,8 +40,8 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
             // FIRST KEY ENTER ON UNIT, TO DISPLAY PATHS
             if(!cursor.isToTestOverlap() && cursor.getMode() == CursorMode.EXPLORE)
             {
-                this.cursor.setMode(CursorMode.MOVE_SOLDIER);
                 this.pathFinder.getPossibleWays(cursor.getUnit());
+                this.cursor.setMode(CursorMode.MOVE_SOLDIER);
             }
 
             // SECOND KEY ENTER ON UNIT POSSIBLE PATHS TO VALID ONE AND UNCOLORIZE ALL
@@ -59,10 +59,12 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
 
     public void uncolorize()
     {
-        System.err.println(this.pathFinder.toString());
-        this.pathFinder.reset();
-        this.cursor.setMode(CursorMode.EXPLORE);
-        this.drawnPath = null;
+        if(drawnPath != null)
+        {
+            this.pathFinder.reset();
+            this.cursor.setMode(CursorMode.EXPLORE);
+            this.drawnPath = null;
+        }
     }
 
     public void colorize()

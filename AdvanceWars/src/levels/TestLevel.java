@@ -3,15 +3,16 @@ package levels;
 import entity.Cursor;
 import entity.EmptyBlocker;
 import entity.MapEntitySprite;
-import entity.SoldierEntity;
 import game.GameUniverseBoardImpl;
+import game.Player;
 import gameframework.core.*;
 import gameframework.moves_rules.*;
 import rules.CursorStrategyKeyboard;
 import rules.OverlapSoldierRules;
+import soldier.ages.AgeFutureFactory;
+import soldier.ages.AgeMiddleFactory;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created by alan on 15/01/17.
@@ -23,6 +24,9 @@ public class TestLevel extends GameLevelDefaultImpl{
     public static final int SIZE_Y_WINDOW = 28;
 
     Canvas canvas;
+
+    private Player playerOne;
+    private Player playerTwo;
 
     // Land : 0
     // Tree : 1
@@ -80,6 +84,8 @@ public class TestLevel extends GameLevelDefaultImpl{
     public TestLevel(Game g) {
         super(g);
         canvas = g.getCanvas();
+        playerOne = new Player(new AgeFutureFactory());
+        playerTwo = new Player(new AgeMiddleFactory());
     }
 
 
@@ -99,7 +105,6 @@ public class TestLevel extends GameLevelDefaultImpl{
 
         ((CanvasDefaultImpl) g.getCanvas()).setDrawingGameBoard(gameBoard);
 
-        ArrayList<GameEntity> over = new ArrayList<>();
         // Up side
         for(int x=0; x<tab[0].length;x++)
             universe.addGameEntity(new EmptyBlocker(x*SPRITE_SIZE,-SPRITE_SIZE));
@@ -194,16 +199,12 @@ public class TestLevel extends GameLevelDefaultImpl{
 		cursorDriver.setStrategy(keyStr);
 		cursorDriver.setmoveBlockerChecker(moveBlockerChecker);
 		canvas.addKeyListener(keyStr);
+
 		c.setDriver(cursorDriver);
 		c.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 		universe.addGameEntity(c);
 
-        SoldierEntity s = new SoldierEntity(canvas,"Billy");
-        s.setPosition(new Point(10 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-        universe.addGameEntity(s);
-
-        SoldierEntity s2 = new SoldierEntity(canvas,"Joe");
-        s2.setPosition(new Point(7 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-        universe.addGameEntity(s2);
+		playerOne.init(canvas,universe, Player.NUMBER.ONE);
+		playerTwo.init(canvas,universe, Player.NUMBER.TWO);
     }
 }

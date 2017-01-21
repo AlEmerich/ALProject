@@ -1,8 +1,9 @@
-package util;
+package test;
 
 import gameframework.core.GameEntity;
 import org.junit.Before;
 import org.junit.Test;
+import util.Tree;
 
 import static org.junit.Assert.assertNotNull;
 

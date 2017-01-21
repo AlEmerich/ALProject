@@ -1,24 +1,38 @@
 /**
  * D. Auber & P. Narbel
- * Solution TD Architecture Logicielle 2016 Université Bordeaux.
+ * Solution TD Architecture Logicielle 2016 Universitï¿½ Bordeaux.
  */
 package soldier.core;
 
+import observer_util.ObservableAbstract;
+
 import java.util.Collections;
 import java.util.Iterator;
-
-import observer_util.ObservableAbstract;
 
 public abstract class UnitSimple extends ObservableAbstract<Unit> 
                                  implements Unit {
 
 	private BehaviorSoldier behavior;
 	private String name;
+	protected int currentMovementPoint;
 
 	public UnitSimple(String name, BehaviorSoldier behavior) {
 		this.behavior = behavior;
 		this.name = name;
 	}
+
+	@Override
+	public int getMovementPoint()
+	{
+		return currentMovementPoint;
+	}
+
+	@Override
+    public void oneStep()
+    {
+        if(this.currentMovementPoint > 0)
+            this.currentMovementPoint--;
+    }
 
 	@Override
 	public String getName() {
