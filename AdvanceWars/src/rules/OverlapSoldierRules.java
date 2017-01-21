@@ -1,8 +1,6 @@
 package rules;
 
-import entity.Cursor;
-import entity.MapEntitySprite;
-import entity.SoldierEntity;
+import entity.*;
 import gameframework.core.GameUniverse;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
@@ -12,11 +10,11 @@ import java.util.Vector;
 /**
  * Created by alan on 16/01/17.
  */
-public class CursorRulesApplier extends OverlapRulesApplierDefaultImpl {
+public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
     protected GameUniverse universe;
     private CursorStrategyKeyboard strategyKeyboard;
 
-    public CursorRulesApplier(GameUniverse u)
+    public OverlapSoldierRules(GameUniverse u)
     {
         this.universe = u;
         this.strategyKeyboard = strategyKeyboard;
@@ -40,7 +38,7 @@ public class CursorRulesApplier extends OverlapRulesApplierDefaultImpl {
 
     public void overlapRule(Cursor cursor, SoldierEntity soldier)
     {
-        if(cursor.isToTestOverlap())
+        if(cursor.isToTestOverlap() && cursor.getMode() == CursorMode.EXPLORE)
         {
             cursor.showSoldierInformation(soldier);
             cursor.setNotTestOverlap();
@@ -49,9 +47,10 @@ public class CursorRulesApplier extends OverlapRulesApplierDefaultImpl {
 
     public void overlapRule(Cursor cursor, MapEntitySprite map)
     {
-        if(map.getFilter() != 0)
+        if(map.getFilter() != MapFilter.NONE)
             strategyKeyboard.colorize();
         else
-            strategyKeyboard.uncolorize();
+            if(cursor.getMode() == CursorMode.MOVE_SOLDIER)
+                strategyKeyboard.uncolorize();
     }
 }

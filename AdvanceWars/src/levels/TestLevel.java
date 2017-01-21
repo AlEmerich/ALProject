@@ -7,8 +7,8 @@ import entity.SoldierEntity;
 import game.GameUniverseBoardImpl;
 import gameframework.core.*;
 import gameframework.moves_rules.*;
-import rules.CursorRulesApplier;
 import rules.CursorStrategyKeyboard;
+import rules.OverlapSoldierRules;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class TestLevel extends GameLevelDefaultImpl{
         MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
         OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
-        OverlapRulesApplier overlapRules = new CursorRulesApplier(universe);
+        OverlapRulesApplier overlapRules = new OverlapSoldierRules(universe);
         overlapProcessor.setOverlapRules(overlapRules);
 
         universe = new GameUniverseBoardImpl(moveBlockerChecker, overlapProcessor);
@@ -190,7 +190,7 @@ public class TestLevel extends GameLevelDefaultImpl{
 
         GameMovableDriverDefaultImpl cursorDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,c);
-        ((CursorRulesApplier) overlapRules).setStrategyKeyboard( (CursorStrategyKeyboard) keyStr);
+        ((OverlapSoldierRules) overlapRules).setStrategyKeyboard( (CursorStrategyKeyboard) keyStr);
 		cursorDriver.setStrategy(keyStr);
 		cursorDriver.setmoveBlockerChecker(moveBlockerChecker);
 		canvas.addKeyListener(keyStr);

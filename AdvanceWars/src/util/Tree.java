@@ -196,11 +196,9 @@ public class Tree<K,T> implements Map{
 
     @Override
     public void clear() {
-
         this.key = null;
         this.children.clear();
         this.parent = null;
-
     }
 
     @Override

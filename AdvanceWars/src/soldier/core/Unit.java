@@ -20,7 +20,7 @@ public interface Unit extends Observable<Unit> {
 	public float parry(float force); 
 	public float strike();
 	default int getMovmentPoint(){
-		return 10;
+		return 5;
 	}
 
 	/**

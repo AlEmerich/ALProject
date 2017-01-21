@@ -4,6 +4,7 @@ import gameframework.core.GameEntity;
 import gameframework.core.Overlappable;
 import levels.TestLevel;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,13 +18,33 @@ public interface PathFinding {
         UP(0,-1),
         DOWN(0,1);
 
-        int x,y;
+        public int x,y;
 
         Direction(int x,int y)
         {
             this.x = x;
             this.y = y;
         }
+
+    }
+
+    static Direction getDirection(String sourceKey, String destKey)
+    {
+        String[] s = sourceKey.split(",");
+        String[] d = destKey.split(",");
+
+        int x = Integer.parseInt(s[0]) - Integer.parseInt(d[0]);
+        int y = Integer.parseInt(s[1]) - Integer.parseInt(d[1]);
+
+        if(x == -1)
+            return Direction.LEFT;
+        else if(x == 1)
+            return Direction.RIGHT;
+        else if(y == 1)
+            return Direction.DOWN;
+        else if(y == -1)
+            return Direction.UP;
+        return null;
     }
 
     static String formatKey(Overlappable o)
@@ -40,7 +61,7 @@ public interface PathFinding {
 
     void removeFastestWay(String map);
 
-    boolean setFastestWay(String sourceKey,String destkey);
+    List<String> setFastestWay(String destkey);
 
     /**
      * Reset the collection

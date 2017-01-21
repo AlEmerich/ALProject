@@ -18,7 +18,7 @@ public class MapEntitySprite implements Drawable,GameEntity, Overlappable{
 	private MapEntityType type;
 
 	//0: None, 1:possible, 2:oneWay
-	private int filter=0;
+	private MapFilter filter = MapFilter.NONE;
 
 	@Override
 	public Point getPosition() {
@@ -75,12 +75,12 @@ public class MapEntitySprite implements Drawable,GameEntity, Overlappable{
 		return this.type;
 	}
 
-	public void setFilter(int filter)
+	public void setFilter(MapFilter filter)
 	{
 		this.filter = filter;
 	}
 
-	public int getFilter()
+	public MapFilter getFilter()
 	{
 		return filter;
 	}
@@ -98,12 +98,12 @@ public class MapEntitySprite implements Drawable,GameEntity, Overlappable{
 				, type.x*RENDERING_SIZE, type.y*RENDERING_SIZE,
 				(type.x+1)*RENDERING_SIZE,(type.y+1)*RENDERING_SIZE, null);
 
-		if(filter!=0)
+		if(filter!=MapFilter.NONE)
 		{
-			if(filter==1)
+			if(filter==MapFilter.POSSIBLE)
 				g.setColor(new Color(1,0,0,0.3f));
-			if(filter==2)
-				g.setColor(new Color(0,1,0,0.3f));
+			if(filter==MapFilter.FASTEST)
+				g.setColor(new Color(0,0,1,0.3f));
 			g.fillRect(x,y,RENDERING_SIZE,RENDERING_SIZE);
 		}
 	}

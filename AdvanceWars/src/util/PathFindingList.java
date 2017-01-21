@@ -1,7 +1,8 @@
     package util;
 
     import entity.MapEntitySprite;
-import entity.SoldierEntity;
+    import entity.MapFilter;
+    import entity.SoldierEntity;
 import game.GameUniverseBoardImpl;
 import gameframework.core.GameEntity;
 import gameframework.core.GameUniverse;
@@ -44,8 +45,8 @@ import java.util.TreeMap;
         }
 
         @Override
-        public boolean setFastestWay(String sourceKey, String destkey) {
-            return true;
+        public List<String> setFastestWay(String destkey) {
+            return null;
         }
 
         @Override
@@ -108,7 +109,7 @@ import java.util.TreeMap;
 
                             gl.forEach(x -> {
                                 if(x != null && x instanceof MapEntitySprite)
-                                    ((MapEntitySprite) x).setFilter(1);
+                                    ((MapEntitySprite) x).setFilter(MapFilter.POSSIBLE);
                             });
                             recursivePathFinderList(key,currentLevel,board);
                         }

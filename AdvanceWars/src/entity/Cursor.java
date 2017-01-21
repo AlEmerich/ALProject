@@ -12,9 +12,11 @@ import java.awt.*;
  */
 public class Cursor extends GameMovable implements Drawable, GameEntity,
         Overlappable {
+
     private DrawableImage image;
     private boolean testOverlap = true;
     private MenuSoldierStateFrame soldierFrame;
+    private CursorMode mode=CursorMode.EXPLORE;
 
     public Cursor(Canvas canvas)
     {
@@ -45,6 +47,16 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
     @Override
     public Rectangle getBoundingBox() {
         return (new Rectangle(0, 0, MapEntitySprite.RENDERING_SIZE, MapEntitySprite.RENDERING_SIZE));
+    }
+
+    public void setMode(CursorMode m)
+    {
+        this.mode = m;
+    }
+
+    public CursorMode getMode()
+    {
+        return this.mode;
     }
 
     public void showSoldierInformation(SoldierEntity unit)

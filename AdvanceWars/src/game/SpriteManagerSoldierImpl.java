@@ -19,8 +19,10 @@ public class SpriteManagerSoldierImpl implements SpriteManager {
     enum TypeSprite
     {
         Idle(0,4*16,16,16,3),
+        Left(5*16, 4*16, 16, 16, 4),
         Right(4*16, 4*16, 16, 16, 4),
-        Left(5*16, 4*16, 16, 16, 4);
+        Up(5*16,6*16,16,17,4),
+        Down(0,6*16,16,17,4);
 
         int beginX, beginY;
         int sizeX, sizeY;
@@ -39,7 +41,7 @@ public class SpriteManagerSoldierImpl implements SpriteManager {
     public SpriteManagerSoldierImpl(String filename, Canvas canvas)
     {
         this.image = new DrawableImage(filename, canvas);
-        this.currentState = TypeSprite.Left;
+        this.currentState = TypeSprite.Idle;
         this.spriteNumber = 0;
     }
 
@@ -55,7 +57,7 @@ public class SpriteManagerSoldierImpl implements SpriteManager {
 
     @Override
     public void setType(String type) {
-
+        this.currentState = TypeSprite.valueOf(type);
     }
 
     @Override

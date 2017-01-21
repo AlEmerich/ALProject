@@ -1,12 +1,14 @@
 package rules;
 
 import entity.Cursor;
+import entity.CursorMode;
 import gameframework.core.GameUniverse;
 import gameframework.moves_rules.MoveStrategyKeyboard;
 import util.PathFinding;
 import util.PathFindingTree;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 /**
  * Created by alaguitard on 18/01/17.
@@ -15,9 +17,10 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
 
     private PathFinding pathFinder;
     private Cursor cursor;
-    private boolean toDrawWay = false;
-
+    private List<String> drawnPath;
     private String destinationKey;
+
+    private boolean cursorMoved =false;
 
     public CursorStrategyKeyboard(GameUniverse universe, Cursor cursor)
     {
@@ -29,35 +32,47 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
     @Override
     public void keyPressed(KeyEvent event)
     {
+        this.cursorMoved = false;
         super.keyPressed(event);
 
-        if(event.getKeyCode() == KeyEvent.VK_ENTER && !cursor.isToTestOverlap())
+        if(event.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            toDrawWay = true;
-            System.err.println(this.pathFinder.getPossibleWays(cursor.getUnit()));
+            // FIRST KEY ENTER ON UNIT, TO DISPLAY PATHS
+            if(!cursor.isToTestOverlap() && cursor.getMode() == CursorMode.EXPLORE)
+            {
+                this.cursor.setMode(CursorMode.MOVE_SOLDIER);
+                this.pathFinder.getPossibleWays(cursor.getUnit());
+            }
 
-        }
+            // SECOND KEY ENTER ON UNIT POSSIBLE PATHS TO VALID ONE AND UNCOLORIZE ALL
+            if(drawnPath != null) {
+                if(drawnPath.size() != 1)
+                {
+                    cursor.getUnit().setWay(this.drawnPath);
+                    cursor.getUnit().oneStepMove();
+                }
 
-        if(toDrawWay) {
-
-
-
+                this.uncolorize();
+            }
         }
     }
 
     public void uncolorize()
     {
+        System.err.println(this.pathFinder.toString());
         this.pathFinder.reset();
-        toDrawWay = false;
+        this.cursor.setMode(CursorMode.EXPLORE);
+        this.drawnPath = null;
     }
 
     public void colorize()
     {
-        if(toDrawWay) {
+        if(!cursorMoved && this.cursor.getMode() == CursorMode.MOVE_SOLDIER) {
             this.pathFinder.removeFastestWay(destinationKey);
             destinationKey = PathFinding.formatKey(cursor);
             // coloriser en vert le plus court chemin du root jusqu'à la clé key
-            this.pathFinder.setFastestWay(PathFinding.formatKey(cursor.getUnit()),destinationKey);
+            this.drawnPath = this.pathFinder.setFastestWay(destinationKey);
+            cursorMoved = true;
         }
     }
 }

@@ -1,11 +1,13 @@
 package util;
 
 import entity.MapEntitySprite;
+import entity.MapFilter;
 import entity.SoldierEntity;
 import game.GameUniverseBoardImpl;
 import gameframework.core.GameEntity;
 import gameframework.core.GameUniverse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -46,6 +48,8 @@ public class PathFindingTree implements PathFinding{
         if(this.paths == null)
             return;
 
+        this.getMapFromCase(this.paths.key).setFilter(MapFilter.NONE);
+
         for(Tree n : this.paths.children)
             resetRec(n);
         Tree.memory.clear();
@@ -54,9 +58,9 @@ public class PathFindingTree implements PathFinding{
 
     private void resetRec(Tree t)
     {
-        if(this.getMapFromCase((String) t.key).getFilter() != 0)
+        if(this.getMapFromCase((String) t.key).getFilter() != MapFilter.NONE)
         {
-            this.getMapFromCase((String) t.key).setFilter(0);
+            this.getMapFromCase((String) t.key).setFilter(MapFilter.NONE);
             for(Tree n : (List<Tree>) t.children)
                 resetRec(n);
         }
@@ -97,18 +101,19 @@ public class PathFindingTree implements PathFinding{
 
                 if(overlap) {
                     Tree children;
-                    if(((MapEntitySprite)data).getFilter() == 0)
+                    if(((MapEntitySprite)data).getFilter() == MapFilter.NONE)
                     {
                         children = (Tree) n.put(key,currentLevel);
-                        ((MapEntitySprite) data).setFilter(1);
+                        ((MapEntitySprite) data).setFilter(MapFilter.POSSIBLE);
                     }
                     else
                     {
                         children = this.paths.getAlreadyIn(key);
-                        if(children.level < currentLevel)
+                        if(children != null && children.level < currentLevel)
                             children.level = currentLevel;
                     }
-                    recursivePathFinderTree(children,currentLevel-1,board);
+                    if(children != null )
+                        recursivePathFinderTree(children,currentLevel-1,board);
                 }
             }
         }
@@ -119,19 +124,18 @@ public class PathFindingTree implements PathFinding{
      * @param destKey the formatted coordinates of the position cursor.
      * @return true if the cursor is in the field of possibilities, false if not.
      */
-    public boolean setFastestWay(String sourceKey,String destKey)
+    public List<String> setFastestWay(String destKey)
     {
         Tree destNode = (Tree) this.paths.get(destKey);
-
-        if(destNode == null)
-            return false;
+        List<String> ret = new ArrayList();
 
         MapEntitySprite data;
         while(destNode != null && (data = this.getMapFromCase((String) destNode.key)) != null) {
-            data.setFilter(2);
+            data.setFilter(MapFilter.FASTEST);
+            ret.add((String) destNode.key);
             destNode = destNode.parent;
         }
-        return true;
+        return ret;
     }
 
     public void removeFastestWay(String destKey)
@@ -141,7 +145,7 @@ public class PathFindingTree implements PathFinding{
 
         // To the source
         while(destNode != null && (data = this.getMapFromCase((String) destNode.key)) != null) {
-            data.setFilter(1);
+            data.setFilter(MapFilter.POSSIBLE);
             destNode = destNode.parent;
         }
     }
