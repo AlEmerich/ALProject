@@ -23,6 +23,12 @@ public class UnitHorseMan extends UnitRider {
 	public int getMaxMovementPoint(){ return MAX_MOVEMENT; }
 
 	@Override
+	public void resetMovementPoint()
+	{
+		this.currentMovementPoint = MAX_MOVEMENT;
+	}
+
+	@Override
 	public void accept(UnitVisitor v) {
 		v.visit(this);
 	}

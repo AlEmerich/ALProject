@@ -6,14 +6,17 @@ import gameframework.core.SpriteManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by alaguitard on 17/01/17.
  */
 public class SpriteManagerSoldierImpl implements SpriteManager {
 
-    private final DrawableImage image;
+    protected final DrawableImage image;
     private int spriteNumber;
+    private List<String> types;
     private TypeSprite currentState;
 
     enum TypeSprite
@@ -22,7 +25,8 @@ public class SpriteManagerSoldierImpl implements SpriteManager {
         Left(5*16, 4*16, 16, 16, 4),
         Right(4*16, 4*16, 16, 16, 4),
         Up(5*16,6*16,16,17,4),
-        Down(0,6*16,16,17,4);
+        Down(0,6*16,16,17,4),
+        Wait(9*16,4*16,16,16,1);
 
         int beginX, beginY;
         int sizeX, sizeY;
@@ -52,11 +56,15 @@ public class SpriteManagerSoldierImpl implements SpriteManager {
 
     @Override
     public void setTypes(String... types) {
-
+        this.types = new ArrayList<>();
+        for(String t : types)
+            this.types.add(t);
     }
 
     @Override
     public void setType(String type) {
+        if(this.types == null || !this.types.contains(type))
+            return;
         this.currentState = TypeSprite.valueOf(type);
     }
 

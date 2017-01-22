@@ -48,7 +48,6 @@ public class PathFindingTree implements PathFinding{
         if(this.paths == null)
             return;
 
-        System.err.println(this.paths.key);
         this.getMapFromCase(this.paths.key).setFilter(MapFilter.NONE);
 
         for(Tree n : this.paths.children)

@@ -4,8 +4,6 @@ import entity.*;
 import gameframework.core.GameUniverse;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
-import soldier.core.Unit;
-import soldier.core.UnitGroup;
 
 import java.util.Vector;
 
@@ -15,6 +13,7 @@ import java.util.Vector;
 public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
     protected GameUniverse universe;
     private CursorStrategyKeyboard strategyKeyboard;
+    private boolean loadInfo = true;
 
     public OverlapSoldierRules(GameUniverse u)
     {
@@ -37,13 +36,23 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
         super.applyOverlapRules(overlaps);
     }
 
-    public void overlapRule(Cursor cursor, SoldierEntity soldier)
+    public void information(Cursor cursor, SoldierEntity unit)
     {
-        if(cursor.isToTestOverlap() && cursor.getMode() == CursorMode.EXPLORE)
+        if(loadInfo && cursor.getMode() == CursorMode.EXPLORE)
         {
-            cursor.showSoldierInformation(soldier);
-            cursor.setNotTestOverlap();
+            cursor.showSoldierInformation(unit);
+            loadInfo = false;
         }
+    }
+
+    public void overlapRule(Cursor cursor, UnitSimpleEntity soldier)
+    {
+        information(cursor,soldier);
+    }
+
+    public void overlapRule(Cursor cursor, UnitGroupEntity group)
+    {
+        information(cursor,group);
     }
 
     public void overlapRule(Cursor cursor, MapEntitySprite map)
@@ -52,28 +61,42 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
             strategyKeyboard.colorize();
         else
             strategyKeyboard.uncolorize();
+        loadInfo = true;
     }
 
-    public void overlapRule(SoldierEntity soldier,SoldierEntity soldier2)
+    public void overlapRule(UnitGroupEntity group,UnitSimpleEntity soldier)
     {
-        if(soldier2.getUnit() instanceof UnitGroup)
+        // MERGE
+        if(group.getOwner() == soldier.getOwner())
         {
-            soldier2.getUnit().addUnit(soldier.getUnit());
-            this.universe.removeGameEntity(soldier);
+            group.merge(soldier.getUnit());
+            universe.removeGameEntity(soldier);
+            loadInfo = true;
         }
-        else if(soldier.getUnit() instanceof UnitGroup)
-        {
-            soldier.getUnit().addUnit(soldier2.getUnit());
-            this.universe.removeGameEntity(soldier2);
-        }
+        // FIGHT
         else
         {
-            Unit groupUnit = new UnitGroup(soldier.getUnit().getName());
-            groupUnit.addUnit(soldier.getUnit());
-            groupUnit.addUnit(soldier2.getUnit());
-            soldier.setUnit(groupUnit);
-            this.universe.removeGameEntity(soldier2);
-        }
 
+        }
+    }
+
+    public void overlapRule(UnitSimpleEntity soldier,UnitSimpleEntity soldier2)
+    {
+        // MERGE
+        if(soldier.getOwner() == soldier2.getOwner())
+        {
+            UnitGroupEntity u = soldier.merge(soldier2.getUnit());
+            soldier2.getOwner().removeInArmy(soldier2.getUnit());
+            this.universe.removeGameEntity(soldier);
+            this.universe.removeGameEntity(soldier2);
+            this.universe.addGameEntity(u);
+
+            loadInfo = true;
+        }
+        // FIGHT
+        else
+        {
+
+        }
     }
 }

@@ -3,6 +3,7 @@ package levels;
 import entity.Cursor;
 import entity.EmptyBlocker;
 import entity.MapEntitySprite;
+import game.GameLevelTurnImpl;
 import game.GameUniverseBoardImpl;
 import game.Player;
 import gameframework.core.*;
@@ -17,16 +18,13 @@ import java.awt.*;
 /**
  * Created by alan on 15/01/17.
  */
-public class TestLevel extends GameLevelDefaultImpl{
+public class TestLevel extends GameLevelTurnImpl{
 
     public static final int SPRITE_SIZE = 16;
     public static final int SIZE_X_WINDOW = 31;
     public static final int SIZE_Y_WINDOW = 28;
 
     Canvas canvas;
-
-    private Player playerOne;
-    private Player playerTwo;
 
     // Land : 0
     // Tree : 1
@@ -84,8 +82,8 @@ public class TestLevel extends GameLevelDefaultImpl{
     public TestLevel(Game g) {
         super(g);
         canvas = g.getCanvas();
-        playerOne = new Player(new AgeFutureFactory());
-        playerTwo = new Player(new AgeMiddleFactory());
+        playerOne = new Player(new AgeMiddleFactory(), Player.NUMBER.ONE);
+        playerTwo = new Player(new AgeFutureFactory(), Player.NUMBER.TWO);
     }
 
 
@@ -191,20 +189,20 @@ public class TestLevel extends GameLevelDefaultImpl{
         for(int x=0; x<tab[0].length;x++)
             universe.addGameEntity(new EmptyBlocker(x*SPRITE_SIZE,y*SPRITE_SIZE));
 
-        Cursor c = new Cursor(canvas);
+        this.cursor = new Cursor(canvas);
 
         GameMovableDriverDefaultImpl cursorDriver = new GameMovableDriverDefaultImpl();
-		MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,c);
+		MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,this.cursor);
         ((OverlapSoldierRules) overlapRules).setStrategyKeyboard( (CursorStrategyKeyboard) keyStr);
 		cursorDriver.setStrategy(keyStr);
 		cursorDriver.setmoveBlockerChecker(moveBlockerChecker);
 		canvas.addKeyListener(keyStr);
 
-		c.setDriver(cursorDriver);
-		c.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(c);
+		this.cursor.setDriver(cursorDriver);
+		this.cursor.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+		universe.addGameEntity(this.cursor);
 
-		playerOne.init(canvas,universe, Player.NUMBER.ONE);
-		playerTwo.init(canvas,universe, Player.NUMBER.TWO);
+		playerOne.init(canvas,universe);
+		playerTwo.init(canvas,universe);
     }
 }

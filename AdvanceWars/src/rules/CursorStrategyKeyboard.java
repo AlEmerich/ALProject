@@ -20,8 +20,6 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
     private List<String> drawnPath = null;
     private String destinationKey;
 
-    private boolean cursorMoved =false;
-
     public CursorStrategyKeyboard(GameUniverse universe, Cursor cursor)
     {
         this.pathFinder = new PathFindingTree(universe);
@@ -32,25 +30,27 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
     @Override
     public void keyPressed(KeyEvent event)
     {
-        this.cursorMoved = false;
         super.keyPressed(event);
 
-        if(event.getKeyCode() == KeyEvent.VK_ENTER)
+        if(cursor.getUnit() == null)
+            return;
+        if(event.getKeyCode() == KeyEvent.VK_ENTER && cursor.getUnit().getOwner().which() == cursor.getCurrentPlayer())
         {
             // FIRST KEY ENTER ON UNIT, TO DISPLAY PATHS
-            if(!cursor.isToTestOverlap() && cursor.getMode() == CursorMode.EXPLORE)
+            if(cursor.getMode() == CursorMode.EXPLORE)
             {
                 this.pathFinder.getPossibleWays(cursor.getUnit());
                 this.cursor.setMode(CursorMode.MOVE_SOLDIER);
+                this.colorize();
+                return;
             }
 
             // SECOND KEY ENTER ON UNIT POSSIBLE PATHS TO VALID ONE AND UNCOLORIZE ALL
-            if(drawnPath != null) {
-                if(drawnPath.size() != 1)
-                {
-                    cursor.getUnit().setWay(this.drawnPath);
-                    cursor.getUnit().oneStepMove();
-                }
+            if(cursor.getMode() == CursorMode.MOVE_SOLDIER) {
+                 if (drawnPath.size() != 1) {
+                     cursor.getUnit().setWay(this.drawnPath);
+                     cursor.getUnit().oneStepMove();
+                 }
 
                 this.uncolorize();
             }
@@ -69,12 +69,11 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
 
     public void colorize()
     {
-        if(!cursorMoved && this.cursor.getMode() == CursorMode.MOVE_SOLDIER) {
+        if(this.cursor.getMode() == CursorMode.MOVE_SOLDIER) {
             this.pathFinder.removeFastestWay(destinationKey);
             destinationKey = PathFinding.formatKey(cursor);
             // coloriser en vert le plus court chemin du root jusqu'à la clé key
             this.drawnPath = this.pathFinder.setFastestWay(destinationKey);
-            cursorMoved = true;
         }
     }
 }

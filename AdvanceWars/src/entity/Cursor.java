@@ -1,6 +1,7 @@
 package entity;
 
 import game.MenuSoldierStateFrame;
+import game.Player;
 import gameframework.core.*;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
 import util.ImageUtility;
@@ -14,14 +15,16 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
         Overlappable {
 
     private DrawableImage image;
-    private boolean testOverlap = true;
     private MenuSoldierStateFrame soldierFrame;
     private CursorMode mode=CursorMode.EXPLORE;
+
+    private Player.NUMBER currentPlayer;
 
     public Cursor(Canvas canvas)
     {
         image = new DrawableImage(ImageUtility.getResource("cursor.png"), canvas);
         this.soldierFrame = new MenuSoldierStateFrame((Frame) canvas.getParent());
+        currentPlayer = Player.NUMBER.ONE;
     }
 
     public SoldierEntity getUnit()
@@ -38,7 +41,6 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
     public void oneStepMoveAddedBehavior() {
         if(this.getSpeedVector().getDirection().getX() != 0 ||
                 this.getSpeedVector().getDirection().getY() != 0){
-            testOverlap = true;
             this.soldierFrame.setVisible(false);
         }
         this.setSpeedVector(SpeedVectorDefaultImpl.createNullVector());
@@ -47,6 +49,13 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
     @Override
     public Rectangle getBoundingBox() {
         return (new Rectangle(0, 0, MapEntitySprite.RENDERING_SIZE, MapEntitySprite.RENDERING_SIZE));
+    }
+
+    public Player.NUMBER getCurrentPlayer(){ return this.currentPlayer; }
+
+    public void changeCurrentPlayer()
+    {
+        this.currentPlayer = (this.currentPlayer.name() == Player.NUMBER.ONE.name() ? Player.NUMBER.TWO : Player.NUMBER.ONE);
     }
 
     public void setMode(CursorMode m)
@@ -63,15 +72,5 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
     {
         this.soldierFrame.setUnit(unit);
         this.soldierFrame.setVisible(true);
-    }
-
-    public void setNotTestOverlap()
-    {
-        this.testOverlap = false;
-    }
-
-    public boolean isToTestOverlap()
-    {
-        return testOverlap;
     }
 }

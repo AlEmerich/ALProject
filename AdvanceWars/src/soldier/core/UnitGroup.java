@@ -88,11 +88,17 @@ public class UnitGroup extends ObservableAbstract<Unit>
 	@Override
 	public int getMaxMovementPoint()
 	{
-		int max=0;
-		int tmp = 0;
-		for (Iterator<Unit> it = subUnits(); it.hasNext(); tmp = it.next().getMaxMovementPoint())
-			if(tmp > max) max = tmp;
-		return max;
+        int max=0;
+        int tmp = 0;
+        for(Unit u : units)
+        {
+            tmp = u.getMaxMovementPoint();
+            if(tmp > max) {
+                max = tmp;
+
+            }
+        }
+        return max;
 	}
 
 	/**
@@ -103,14 +109,26 @@ public class UnitGroup extends ObservableAbstract<Unit>
 	public int getMovementPoint() {
 		int max=0;
 		int tmp = 0;
-		for (Iterator<Unit> it = subUnits(); it.hasNext(); tmp = it.next().getMovementPoint())
-			if(tmp > max) max = tmp;
+		for(Unit u : units)
+        {
+            tmp = u.getMovementPoint();
+            if(tmp > max) {
+                max = tmp;
+
+            }
+        }
 		return max;
 	}
 
 	@Override
 	public void oneStep() {
 		for (Iterator<Unit> it = subUnits(); it.hasNext(); it.next().oneStep());
+	}
+
+	@Override
+	public void resetMovementPoint()
+	{
+		for (Iterator<Unit> it = subUnits(); it.hasNext(); it.next().resetMovementPoint());
 	}
 
 	@Override
@@ -165,5 +183,10 @@ public class UnitGroup extends ObservableAbstract<Unit>
 				.removeEquipment(w)) {
 		}
 	}
- 
+
+	@Override
+    public String toString()
+    {
+        return this.units.size()+"";
+    }
 }

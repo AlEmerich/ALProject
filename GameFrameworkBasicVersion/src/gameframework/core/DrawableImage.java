@@ -18,6 +18,8 @@ public class DrawableImage implements Drawable {
 		}
 	}
 
+	public void setImage(Image image){ this.image = image;}
+
 	public Image getImage() {
 		return image;
 	}

@@ -21,6 +21,12 @@ public class UnitBikerMan extends UnitRider {
 	@Override
 	public int getMaxMovementPoint(){ return MAX_MOVEMENT; }
 
+	@Override
+	public void resetMovementPoint()
+	{
+		this.currentMovementPoint = MAX_MOVEMENT;
+	}
+
 	/**
 	 * A BikerMan can have at most one equipment
 	 */

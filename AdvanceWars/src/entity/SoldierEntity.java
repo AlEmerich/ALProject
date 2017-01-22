@@ -1,11 +1,10 @@
 package entity;
 
-import game.SpriteManagerSoldierImpl;
+import game.Player;
 import gameframework.core.*;
 import gameframework.moves_rules.SpeedVector;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
 import soldier.core.Unit;
-import util.ImageUtility;
 import util.PathFinding;
 
 import java.awt.*;
@@ -15,34 +14,29 @@ import java.util.List;
 /**
  * Created by alaguitard on 17/01/17.
  */
-public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
+public abstract class SoldierEntity extends GameMovable implements Drawable, GameEntity,
         Overlappable {
 
-    private SpriteManager spriteManager;
     private Unit unit;
-    private String filenameImage = "soldier2.png";
     private List<String> toGoThrough = new ArrayList<>();
+    protected Player owner;
 
     protected boolean movable = true;
 
-    public SoldierEntity(Canvas canvas,Unit unit)
+    public SoldierEntity(Player which,Unit unit)
     {
-        spriteManager = new SpriteManagerSoldierImpl(ImageUtility.getResource(filenameImage), canvas);
         this.unit = unit;
-        spriteManager.setTypes(
-                //
-                "Idle",//
-                "Right",
-                "Left",
-                "Down",
-                "Up",
-                "Wait"
-        );
+        this.owner = which;
     }
 
     public void setWay(List<String> list)
     {
         this.toGoThrough = list;
+    }
+
+    public Player getOwner()
+    {
+        return this.owner;
     }
 
     public void move()
@@ -62,34 +56,12 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
 
             }
             this.toGoThrough.remove(this.toGoThrough.size()-1);
-
         }
         else
             this.setSpeedVector(SpeedVectorDefaultImpl.createNullVector());
     }
 
-    public void draw(Graphics g) {
-        String spriteType = "";
-        Point tmp = getSpeedVector().getDirection();
-        movable = true;
-
-        if (tmp.getX() == 1) {
-            spriteType += "Right";
-        } else if (tmp.getX() == -1) {
-            spriteType += "Left";
-        } else if (tmp.getY() == 1) {
-            spriteType += "Down";
-        } else if (tmp.getY() == -1) {
-            spriteType += "Up";
-        } else {
-            spriteType = "Idle";
-            //spriteManager.reset();
-            movable = true;
-        }
-        spriteManager.setType(spriteType);
-        spriteManager.draw(g, getPosition());
-
-    }
+    public abstract void draw(Graphics g);
 
     @Override
     public void oneStepMove()
@@ -100,13 +72,6 @@ public class SoldierEntity extends GameMovable implements Drawable, GameEntity,
                 * v.getSpeed(), (int) v.getDirection()
                 .getY() * v.getSpeed());
         this.oneStepMoveAddedBehavior();
-    }
-
-    @Override
-    public void oneStepMoveAddedBehavior() {
-        if (movable) {
-            spriteManager.increment();
-        }
     }
 
     public Rectangle getBoundingBox() {

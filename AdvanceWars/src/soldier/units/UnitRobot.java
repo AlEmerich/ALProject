@@ -20,6 +20,12 @@ public class UnitRobot extends UnitInfantry {
 	@Override
 	public int getMaxMovementPoint(){ return MAX_MOVEMENT; }
 
+	@Override
+	public void resetMovementPoint()
+	{
+		this.currentMovementPoint = MAX_MOVEMENT;
+	}
+
 	/**
 	 * A Robot can have at most four equipments
 	 */

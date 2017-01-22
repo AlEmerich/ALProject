@@ -21,6 +21,12 @@ public class UnitCenturion extends UnitInfantry {
 	@Override
 	public int getMaxMovementPoint(){ return MAX_MOVEMENT; }
 
+	@Override
+	public void resetMovementPoint()
+	{
+		this.currentMovementPoint = MAX_MOVEMENT;
+	}
+
 	/**
 	 * A Centurion can have at most two equipments
 	 */

@@ -1,4 +1,4 @@
-import gameframework.core.GameDefaultImpl;
+import game.AdvanceWarsGame;
 import gameframework.core.GameLevel;
 import levels.TestLevel;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Main {
     public static void main(String[] args) {
-		GameDefaultImpl g = new GameDefaultImpl();
+		AdvanceWarsGame g = new AdvanceWarsGame(2);
 
         ArrayList<GameLevel> levels = new ArrayList<>();
         levels.add(new TestLevel(g));

@@ -93,7 +93,7 @@ public class MenuSoldierStateFrame extends JDialog {
 
         AttributUnitVisitor visitor = new AttributUnitVisitor();
         this.unit.getUnit().accept(visitor);
-        this.titleLabel.setText(this.unit.getUnit().getName()+" A "+ visitor.attack
+        this.titleLabel.setText(this.unit.getUnit().getName()+" ATK "+ visitor.attack
                 + " HP " +visitor.health
                 + " MP "+ visitor.movementPoint+"/"+visitor.maxMovement+"\n");
 
