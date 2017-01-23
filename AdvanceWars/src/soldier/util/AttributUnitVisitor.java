@@ -5,6 +5,7 @@ import soldier.core.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by alan on 21/01/17.
@@ -44,7 +45,8 @@ public class AttributUnitVisitor implements UnitVisitor {
         movementPoint += ur.getMovementPoint();
         maxMovement += ur.getMaxMovementPoint();
 
-        soldiers.add(" ---->"+ ur.getName()+" A "+ ur.strike() + " HP " + ur.getHealthPoints()
+        soldiers.add(" ---->"+ ur.getName()+" A "+ ur.strike()
+                + " HP " + String.format(Locale.US,"%.2f",ur.getHealthPoints())
                 + " MP "+ ur.getMovementPoint()+"/"+ur.getMaxMovementPoint()+"\n");
     }
 

@@ -1,6 +1,7 @@
 package game;
 
 import gameframework.core.*;
+import levels.LevelOne;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,6 @@ public class AdvanceWarsGame implements Game, Observer {
     protected static final int NB_ROWS = 31;
     protected static final int NB_COLUMNS = 28;
     protected static final int SPRITE_SIZE = 16;
-    public static final int MAX_NUMBER_OF_PLAYER = 4;
     public static final int NUMBER_OF_LIVES = 1;
 
     protected CanvasDefaultImpl defaultCanvas = null;
@@ -29,7 +29,7 @@ public class AdvanceWarsGame implements Game, Observer {
 
     private Frame f;
 
-    private GameLevelDefaultImpl currentPlayedLevel = null;
+    private GameLevelTurnImpl currentPlayedLevel = null;
     protected int levelNumber;
     protected ArrayList<GameLevel> gameLevels;
 
@@ -40,13 +40,9 @@ public class AdvanceWarsGame implements Game, Observer {
     protected Label currentLevel;
     protected Label currentLevelValue;
 
-    public AdvanceWarsGame(int nb_player) {
-        if(MAX_NUMBER_OF_PLAYER < nb_player)
-            return;
-        life = new ObservableValue[nb_player];
-        for (int i = 0; i < nb_player; ++i) {
-            life[i] = new ObservableValue<>(0);
-        }
+    public AdvanceWarsGame() {
+
+        life = new ObservableValue[1];
         player = new ObservableValue("ONE");
         lifeText = new Label("Units Left:");
         playerText = new Label("Player:");
@@ -112,7 +108,7 @@ public class AdvanceWarsGame implements Game, Observer {
         GridBagLayout layout = new GridBagLayout();
         c.setLayout(layout);
         playerValue = new Label(player.getValue());
-        lifeValue = new Label(Integer.toString(life[0].getValue()));
+        lifeValue = new Label();
         currentLevelValue = new Label(Integer.toString(levelNumber));
         c.add(playerText);
         c.add(playerValue);
@@ -130,10 +126,19 @@ public class AdvanceWarsGame implements Game, Observer {
     }
 
     public void start() {
-        for (int i = 0; i < life.length; ++i) {
-            life[i].addObserver(this);
-            life[i].setValue(NUMBER_OF_LIVES);
+        if(gameLevels != null) {
+            for (GameLevel level : gameLevels) {
+                ((GameLevelTurnImpl) level).end();
+            }
         }
+        ArrayList<GameLevel> levels = new ArrayList<>();
+        levels.add(new LevelOne(this));
+        setLevels(levels);
+
+        life[0] = new ObservableValue<>(0);
+        lifeValue.setText(Integer.toString(life[0].getValue()));
+        life[0].addObserver(this);
+
         player.addObserver(this);
         levelNumber = 0;
         for (GameLevel level : gameLevels) {
@@ -144,7 +149,7 @@ public class AdvanceWarsGame implements Game, Observer {
                     currentPlayedLevel.interrupt();
                     currentPlayedLevel = null;
                 }
-                currentPlayedLevel = (GameLevelDefaultImpl) level;
+                currentPlayedLevel = (GameLevelTurnImpl) level;
                 levelNumber++;
                 currentLevelValue.setText(Integer.toString(levelNumber));
                 currentPlayedLevel.start();
@@ -152,7 +157,6 @@ public class AdvanceWarsGame implements Game, Observer {
             } catch (Exception e) {
             }
         }
-
     }
 
     public void restore() {
@@ -164,13 +168,11 @@ public class AdvanceWarsGame implements Game, Observer {
     }
 
     public void pause() {
-        System.out.println("pause(): Unimplemented operation");
-        // currentPlayedLevel.suspend();
+        currentPlayedLevel.pause();
     }
 
     public void resume() {
-        System.out.println("resume(): Unimplemented operation");
-        // currentPlayedLevel.resume();
+        currentPlayedLevel.unpause();
     }
 
     @Override
@@ -205,7 +207,10 @@ public class AdvanceWarsGame implements Game, Observer {
                     int lives = ((ObservableValue<Integer>) o).getValue();
                     lifeValue.setText(Integer.toString(lives));
                     if (lives == 0) {
-                        informationValue.setText("Defeat");
+                        if(player.getValue().equals("ONE"))
+                            informationValue.setText("PLAYER TWO WIN !!!");
+                        else
+                            informationValue.setText("PLAYER ONE WIN !!!");
                         currentPlayedLevel.interrupt();
                         currentPlayedLevel.end();
                     }

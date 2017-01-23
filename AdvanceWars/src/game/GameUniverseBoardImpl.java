@@ -1,11 +1,10 @@
 package game;
 
-import com.oracle.webservices.internal.api.message.BasePropertySet;
-import entity.MapEntitySprite;
+import entity.SoldierEntity;
 import gameframework.core.GameEntity;
 import gameframework.core.GameUniverseDefaultImpl;
+import gameframework.core.Movable;
 import gameframework.core.Overlappable;
-import gameframework.moves_rules.MoveBlocker;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.OverlapProcessor;
 import util.PathFinding;
@@ -40,5 +39,22 @@ public class GameUniverseBoardImpl extends GameUniverseDefaultImpl {
             }
         }
         return tree;
+    }
+
+    @Override
+    public void allOneStepMoves()
+    {
+        GameEntity entity;
+        for (Iterator<GameEntity> it = gameEntities();
+             it.hasNext() ; ) {
+            entity = it.next();
+            if (entity instanceof Movable) {
+                ((Movable) entity).oneStepMove();
+                if(entity instanceof SoldierEntity
+                        && !((SoldierEntity) entity).getUnit().alive() )
+                    this.removeGameEntity(entity);
+
+            }
+        }
     }
 }

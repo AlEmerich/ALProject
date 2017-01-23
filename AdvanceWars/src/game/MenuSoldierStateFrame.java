@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Locale;
 
 /**
  * Created by alaguitard on 18/01/17.
@@ -94,7 +95,7 @@ public class MenuSoldierStateFrame extends JDialog {
         AttributUnitVisitor visitor = new AttributUnitVisitor();
         this.unit.getUnit().accept(visitor);
         this.titleLabel.setText(this.unit.getUnit().getName()+" ATK "+ visitor.attack
-                + " HP " +visitor.health
+                + " HP " +String.format(Locale.US,"%.2f",visitor.health)
                 + " MP "+ visitor.movementPoint+"/"+visitor.maxMovement+"\n");
 
         for(String s : visitor.soldiers)

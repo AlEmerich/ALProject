@@ -2,7 +2,7 @@ package util;
 
 import gameframework.core.GameEntity;
 import gameframework.core.Overlappable;
-import levels.TestLevel;
+import levels.LevelOne;
 
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ public interface PathFinding {
 
     static String formatKey(Overlappable o)
     {
-        return o.getPosition().x / TestLevel.SPRITE_SIZE + ","+o.getPosition().y / TestLevel.SPRITE_SIZE;
+        return o.getPosition().x / LevelOne.SPRITE_SIZE + ","+o.getPosition().y / LevelOne.SPRITE_SIZE;
     }
 
     /**

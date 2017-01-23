@@ -24,6 +24,7 @@ public interface Unit extends Observable<Unit> {
 	int getMovementPoint();
 	void oneStep();
 	void resetMovementPoint();
+
 	/**
 	 * Behavior extensions
 	 */

@@ -95,7 +95,6 @@ public class UnitGroup extends ObservableAbstract<Unit>
             tmp = u.getMaxMovementPoint();
             if(tmp > max) {
                 max = tmp;
-
             }
         }
         return max;

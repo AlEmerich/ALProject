@@ -20,7 +20,7 @@ public abstract class SoldierEntity extends GameMovable implements Drawable, Gam
     private Unit unit;
     private List<String> toGoThrough = new ArrayList<>();
     protected Player owner;
-
+    private String lastMoveKey;
     protected boolean movable = true;
 
     public SoldierEntity(Player which,Unit unit)
@@ -39,6 +39,11 @@ public abstract class SoldierEntity extends GameMovable implements Drawable, Gam
         return this.owner;
     }
 
+    public void stepBackward()
+    {
+        this.toGoThrough.add(this.lastMoveKey);
+    }
+
     public void move()
     {
         if(!this.toGoThrough.isEmpty())
@@ -52,8 +57,8 @@ public abstract class SoldierEntity extends GameMovable implements Drawable, Gam
                 if(d != null) {
                     this.setSpeedVector(new SpeedVectorDefaultImpl(new Point(d.x,d.y)));
                     this.getUnit().oneStep();
+                    this.lastMoveKey = from;
                 }
-
             }
             this.toGoThrough.remove(this.toGoThrough.size()-1);
         }

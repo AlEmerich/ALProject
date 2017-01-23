@@ -3,7 +3,7 @@ package game;
 import entity.SoldierEntity;
 import entity.UnitSimpleEntity;
 import gameframework.core.GameUniverse;
-import levels.TestLevel;
+import levels.LevelOne;
 import soldier.core.AgeAbstractFactory;
 import soldier.core.BreakingRuleException;
 import soldier.core.Unit;
@@ -19,12 +19,12 @@ import java.util.TreeMap;
 public class Player {
 
     public enum NUMBER {
-        ONE("Red Army",new Point(9* TestLevel.SPRITE_SIZE,19* TestLevel.SPRITE_SIZE),
-                new Point(10* TestLevel.SPRITE_SIZE,17* TestLevel.SPRITE_SIZE),
-                new Point(11* TestLevel.SPRITE_SIZE,19* TestLevel.SPRITE_SIZE)),
-        TWO("Blue Army",new Point(9* TestLevel.SPRITE_SIZE,6 * TestLevel.SPRITE_SIZE),
-                new Point(10* TestLevel.SPRITE_SIZE,8 * TestLevel.SPRITE_SIZE),
-                new Point(11* TestLevel.SPRITE_SIZE,6 * TestLevel.SPRITE_SIZE));
+        ONE("Red Army",new Point(9* LevelOne.SPRITE_SIZE,19* LevelOne.SPRITE_SIZE),
+                new Point(10* LevelOne.SPRITE_SIZE,17* LevelOne.SPRITE_SIZE),
+                new Point(11* LevelOne.SPRITE_SIZE,19* LevelOne.SPRITE_SIZE)),
+        TWO("Blue Army",new Point(9* LevelOne.SPRITE_SIZE,6 * LevelOne.SPRITE_SIZE),
+                new Point(10* LevelOne.SPRITE_SIZE,8 * LevelOne.SPRITE_SIZE),
+                new Point(11* LevelOne.SPRITE_SIZE,6 * LevelOne.SPRITE_SIZE));
 
         TreeMap<String,Point> initPoints;
         String title;
@@ -77,7 +77,7 @@ public class Player {
         this.army.resetMovementPoint();
     }
 
-    public void init(Canvas canvas,GameUniverse universe)
+    public void init(Canvas canvas, GameUniverse universe)
     {
         boolean infantry = true;
         for(Map.Entry<String, Point> init : player.initPoints.entrySet())
@@ -94,7 +94,5 @@ public class Player {
             universe.addGameEntity(s);
             infantry = !infantry;
         }
-
-        System.err.println(this.army.toString());
     }
 }

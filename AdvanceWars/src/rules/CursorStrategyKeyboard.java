@@ -34,6 +34,12 @@ public class CursorStrategyKeyboard extends MoveStrategyKeyboard {
 
         if(cursor.getUnit() == null)
             return;
+
+        if(event.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+
+        }
+
         if(event.getKeyCode() == KeyEvent.VK_ENTER && cursor.getUnit().getOwner().which() == cursor.getCurrentPlayer())
         {
             // FIRST KEY ENTER ON UNIT, TO DISPLAY PATHS

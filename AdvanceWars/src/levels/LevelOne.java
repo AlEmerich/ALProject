@@ -18,7 +18,7 @@ import java.awt.*;
 /**
  * Created by alan on 15/01/17.
  */
-public class TestLevel extends GameLevelTurnImpl{
+public class LevelOne extends GameLevelTurnImpl{
 
     public static final int SPRITE_SIZE = 16;
     public static final int SIZE_X_WINDOW = 31;
@@ -79,7 +79,7 @@ public class TestLevel extends GameLevelTurnImpl{
             { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
 
-    public TestLevel(Game g) {
+    public LevelOne(Game g) {
         super(g);
         canvas = g.getCanvas();
         playerOne = new Player(new AgeMiddleFactory(), Player.NUMBER.ONE);
