@@ -63,8 +63,9 @@ public class MapEntitySprite implements Drawable,GameEntity, Overlappable{
 	}
 
 	public MapEntitySprite(Canvas defaultCanvas, int xx, int yy, MapEntityType t) {
+		ImageUtility util = new ImageUtility();
 		if(image == null)
-			image = new DrawableImage(ImageUtility.getResource("map1.png"), defaultCanvas);
+			image = new DrawableImage(util.getResource("map1.png"), defaultCanvas);
 		x = xx;
 		y = yy;
 		this.type = t;

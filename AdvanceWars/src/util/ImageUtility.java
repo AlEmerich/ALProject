@@ -1,16 +1,42 @@
 package util;
 
-import java.io.File;
+import main.Main;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.IOException;
-import java.util.ResourceBundle;
+import java.io.InputStream;
 
 /**
  * Created by alaguitard on 17/01/17.
  */
 public class ImageUtility {
 
-    public static String getResource(String filename)
+    public Image getResource(String filename)
     {
-        return (new File(ImageUtility.class.getClassLoader().getResource(filename).getPath())).getPath();
+        filename = "/"+filename;
+
+        try
+        {
+            InputStream stream = Main.class.getResourceAsStream(filename);
+            try {
+                Image i = ImageIO.read(stream);
+                return i;
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        /*
+        String result = null;
+        result = new File(Thread.currentThread().getContextClassLoader().getResource(filename).getPath()).getPath();
+
+        System.err.println(result);*/
+        return null;
     }
 }

@@ -85,9 +85,9 @@ public class MenuSoldierStateFrame extends JDialog {
         this.listPanel.removeAll();
         this.setTitle(u.getUnit().getName());
         this.unit = u;
-
+        ImageUtility util = new ImageUtility();
         // Image
-        ImageIcon icon = new ImageIcon(ImageUtility.getResource(this.getUnit().getFilenameImage()));
+        ImageIcon icon = new ImageIcon(util.getResource(this.getUnit().getFilenameImage()));
         this.iconPanel.setIcon(icon);
 
         // Title

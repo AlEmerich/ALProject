@@ -26,7 +26,8 @@ public class UnitSimpleEntity extends SoldierEntity {
         else
             filenameImage = "soldierBlue.png";
         this.canvas = canvas;
-        spriteManager = new SpriteManagerSoldierImpl(ImageUtility.getResource(filenameImage), canvas);
+
+        spriteManager = new SpriteManagerSoldierImpl(filenameImage, canvas);
         spriteManager.setTypes(
                 //
                 "Idle",//

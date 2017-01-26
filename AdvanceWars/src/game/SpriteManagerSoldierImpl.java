@@ -3,6 +3,7 @@ package game;
 import entity.MapEntitySprite;
 import gameframework.core.DrawableImage;
 import gameframework.core.SpriteManager;
+import util.ImageUtility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +45,8 @@ public class SpriteManagerSoldierImpl implements SpriteManager {
 
     public SpriteManagerSoldierImpl(String filename, Canvas canvas)
     {
-        this.image = new DrawableImage(filename, canvas);
+        ImageUtility util = new ImageUtility();
+        this.image = new DrawableImage(util.getResource(filename), canvas);
         this.currentState = TypeSprite.Idle;
         this.spriteNumber = 0;
     }

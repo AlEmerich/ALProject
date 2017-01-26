@@ -22,7 +22,8 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
 
     public Cursor(Canvas canvas)
     {
-        image = new DrawableImage(ImageUtility.getResource("cursor.png"), canvas);
+        ImageUtility util = new ImageUtility();
+        image = new DrawableImage(util.getResource("cursor.png"), canvas);
         this.soldierFrame = new MenuSoldierStateFrame((Frame) canvas.getParent());
         currentPlayer = Player.NUMBER.ONE;
     }

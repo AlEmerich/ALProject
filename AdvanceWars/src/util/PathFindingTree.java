@@ -109,8 +109,10 @@ public class PathFindingTree implements PathFinding{
                     else
                     {
                         children = this.paths.getAlreadyIn(key);
-                        if(children != null && children.level < currentLevel)
+                        if(children != null && children.level < currentLevel) {
                             children.level = currentLevel;
+                            children.parent = n;
+                        }
                     }
                     if(children != null )
                         recursivePathFinderTree(children,currentLevel-1,board);
