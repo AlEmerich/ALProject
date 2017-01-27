@@ -68,9 +68,9 @@ public class AttributUnitVisitor implements UnitVisitor {
             weapons += it.next().getName()+" ";
 
         }
-        soldiers += "<li>"+ ui.getName()+" ATK "
+        soldiers += "<li>"+ ui.getName()+" ATK "+ ui.strike()
                 + weapons
-                + ui.strike() + " <br> HP " + ui.getHealthPoints()
+                + " <br> HP " + ui.getHealthPoints()
                 + " MP "+ui.getMovementPoint()+"/"+ui.getMaxMovementPoint()+"</li>";
     }
 }

@@ -4,7 +4,11 @@ import entity.*;
 import gameframework.core.GameUniverse;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
+import soldier.core.AgeAbstractFactory;
+import soldier.core.BreakingRuleException;
+import soldier.core.UnitGroup;
 
+import javax.swing.*;
 import java.util.Vector;
 
 /**
@@ -156,5 +160,30 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
 
             fight(attacker,defender);
         }
+    }
+
+    private void addEquipmentOverlap(SoldierEntity soldier, WeaponEntity weapon)
+    {
+        AgeAbstractFactory factory = soldier.getOwner().getFactory();
+        try
+        {
+            soldier.getUnit().addEquipment(weapon.isShield() ? factory.defenseWeapon() : factory.attackWeapon());
+            this.universe.removeGameEntity(weapon);
+        }
+        catch (BreakingRuleException e)
+        {
+
+        }
+    }
+
+    // WEAPON
+    public void overlapRule(UnitGroupEntity group,WeaponEntity weapon)
+    {
+        addEquipmentOverlap(group,weapon);
+    }
+
+    public void overlapRule(UnitSimpleEntity soldier,WeaponEntity weapon)
+    {
+        addEquipmentOverlap(soldier,weapon);
     }
 }

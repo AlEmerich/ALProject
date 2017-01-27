@@ -76,10 +76,7 @@ public class Player {
         for(int i=0;i<numberOfUnit;i++)
         {
             Unit unit = infantry ? factory.infantryUnit("Unit "+(i+1)) : factory.riderUnit("Unit "+i);
-            try{
-                unit.addEquipment(factory.attackWeapon());
-                unit.addEquipment(factory.defenseWeapon());
-            }catch(BreakingRuleException e){}
+
 
             army.addUnit(unit);
             SoldierEntity s = new UnitSimpleEntity(this,canvas,unit);
@@ -108,6 +105,11 @@ public class Player {
         }
 
 
+    }
+
+    public AgeAbstractFactory getFactory()
+    {
+        return this.factory;
     }
 
     private String getRandomPointForArmy(int upx, int downy)

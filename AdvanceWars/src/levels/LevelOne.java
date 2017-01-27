@@ -13,6 +13,7 @@ import rules.CursorStrategyKeyboard;
 import rules.OverlapSoldierRules;
 import soldier.ages.AgeFutureFactory;
 import soldier.ages.AgeMiddleFactory;
+import soldier.core.Weapon;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -203,6 +204,23 @@ public class LevelOne extends GameLevelTurnImpl{
         this.cursor.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
         universe.addGameEntity(this.cursor);
 
+        System.err.println("SHIELD");
+        for(int i=0;i<SIZE_X_WINDOW;i+=6)
+        {
+            int x = i*SPRITE_SIZE;
+            int yy = (SIZE_Y_WINDOW/2)*SPRITE_SIZE;
+            System.err.println(x+":"+yy);
+            universe.addGameEntity(new WeaponEntity(canvas,x,yy,WeaponType.SHIELD));
+        }
+        System.err.println("ATTACK");
+        for(int i=3;i<SIZE_X_WINDOW;i+=6)
+        {
+            int x = i*SPRITE_SIZE;
+            int yy = (SIZE_Y_WINDOW/2)*SPRITE_SIZE;
+            System.err.println(x+":"+yy);
+            universe.addGameEntity(new WeaponEntity(canvas,x,yy,WeaponType.ATTACK));
+        }
+
         MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,this.cursor,this.canvas);
         ((OverlapSoldierRules) overlapRules).setStrategyKeyboard( (CursorStrategyKeyboard) keyStr);
         cursorDriver.setStrategy(keyStr);
@@ -237,5 +255,7 @@ public class LevelOne extends GameLevelTurnImpl{
 
             }
         });
+
+
     }
 }
