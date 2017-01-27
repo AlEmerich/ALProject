@@ -120,6 +120,13 @@ public class UnitGroup extends ObservableAbstract<Unit>
 	}
 
 	@Override
+	public void emptyMovementPoint()
+	{
+		for(Unit u : units)
+			u.emptyMovementPoint();
+	}
+
+	@Override
 	public void oneStep() {
 		for (Iterator<Unit> it = subUnits(); it.hasNext(); it.next().oneStep());
 	}

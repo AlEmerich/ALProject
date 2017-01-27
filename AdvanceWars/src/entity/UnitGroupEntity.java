@@ -28,6 +28,7 @@ public class UnitGroupEntity extends UnitSimpleEntity {
     {
         this.getUnit().addUnit(u);
         this.getOwner().removeInArmy(u);
+        this.getUnit().emptyMovementPoint();
         return this;
     }
 }

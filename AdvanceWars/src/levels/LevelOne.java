@@ -1,12 +1,13 @@
 package levels;
 
-import entity.Cursor;
-import entity.EmptyBlocker;
-import entity.MapEntitySprite;
+import entity.*;
 import game.GameLevelTurnImpl;
 import game.GameUniverseBoardImpl;
 import game.Player;
-import gameframework.core.*;
+import gameframework.core.CanvasDefaultImpl;
+import gameframework.core.Game;
+import gameframework.core.GameMovableDriverDefaultImpl;
+import gameframework.core.GameUniverseViewPortDefaultImpl;
 import gameframework.moves_rules.*;
 import rules.CursorStrategyKeyboard;
 import rules.OverlapSoldierRules;
@@ -14,6 +15,8 @@ import soldier.ages.AgeFutureFactory;
 import soldier.ages.AgeMiddleFactory;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by alan on 15/01/17.
@@ -21,9 +24,9 @@ import java.awt.*;
 public class LevelOne extends GameLevelTurnImpl{
 
     public static final int SPRITE_SIZE = 16;
-    public static final int SIZE_X_WINDOW = 31;
-    public static final int SIZE_Y_WINDOW = 28;
-
+    public static final int SIZE_X_WINDOW = 28;
+    public static final int SIZE_Y_WINDOW = 31;
+    public static final int NUMBER_OF_UNIT = 10;
     Canvas canvas;
 
     // Land : 0
@@ -82,8 +85,8 @@ public class LevelOne extends GameLevelTurnImpl{
     public LevelOne(Game g) {
         super(g);
         canvas = g.getCanvas();
-        playerOne = new Player(new AgeMiddleFactory(), Player.NUMBER.ONE);
-        playerTwo = new Player(new AgeFutureFactory(), Player.NUMBER.TWO);
+        players.add(new Player(new AgeMiddleFactory(), Player.NUMBER.ONE));
+        players.add(new Player(new AgeFutureFactory(), Player.NUMBER.TWO));
     }
 
 
@@ -189,20 +192,50 @@ public class LevelOne extends GameLevelTurnImpl{
         for(int x=0; x<tab[0].length;x++)
             universe.addGameEntity(new EmptyBlocker(x*SPRITE_SIZE,y*SPRITE_SIZE));
 
-        this.cursor = new Cursor(canvas);
-
         GameMovableDriverDefaultImpl cursorDriver = new GameMovableDriverDefaultImpl();
-		MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,this.cursor);
+
+        for(Player p : players)
+            p.init(canvas,universe,NUMBER_OF_UNIT);
+
+        this.cursor = new entity.Cursor(canvas,players.get(0));
+
+        this.cursor.setDriver(cursorDriver);
+        this.cursor.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+        universe.addGameEntity(this.cursor);
+
+        MoveStrategyKeyboard keyStr = new CursorStrategyKeyboard(universe,this.cursor,this.canvas);
         ((OverlapSoldierRules) overlapRules).setStrategyKeyboard( (CursorStrategyKeyboard) keyStr);
-		cursorDriver.setStrategy(keyStr);
-		cursorDriver.setmoveBlockerChecker(moveBlockerChecker);
-		canvas.addKeyListener(keyStr);
+        cursorDriver.setStrategy(keyStr);
+        cursorDriver.setmoveBlockerChecker(moveBlockerChecker);
+        canvas.addKeyListener(keyStr);
+        canvas.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                cursor.setOverlapUnit(false);
+                Point pos = mouseEvent.getPoint();
+                cursor.setPosition(new Point(pos.x-(pos.x%SPRITE_SIZE)
+                        ,pos.y-(pos.y%SPRITE_SIZE)));
+            }
 
-		this.cursor.setDriver(cursorDriver);
-		this.cursor.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(this.cursor);
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
 
-		playerOne.init(canvas,universe);
-		playerTwo.init(canvas,universe);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
     }
 }

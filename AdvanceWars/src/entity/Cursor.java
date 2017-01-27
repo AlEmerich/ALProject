@@ -17,21 +17,26 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
     private DrawableImage image;
     private MenuSoldierStateFrame soldierFrame;
     private CursorMode mode=CursorMode.EXPLORE;
+    private boolean overlapUnit;
+    private Player currentPlayer;
 
-    private Player.NUMBER currentPlayer;
-
-    public Cursor(Canvas canvas)
+    public Cursor(Canvas canvas,Player numberOne)
     {
         ImageUtility util = new ImageUtility();
         image = new DrawableImage(util.getResource("cursor.png"), canvas);
         this.soldierFrame = new MenuSoldierStateFrame((Frame) canvas.getParent());
-        currentPlayer = Player.NUMBER.ONE;
+        currentPlayer = numberOne;
+        this.overlapUnit = false;
     }
 
     public SoldierEntity getUnit()
     {
         return soldierFrame.getUnit();
     }
+
+    public boolean isOverlapUnit(){ return overlapUnit; }
+
+    public void setOverlapUnit(boolean b){ this.overlapUnit = b;}
 
     @Override
     public void draw(Graphics g) {
@@ -52,11 +57,11 @@ public class Cursor extends GameMovable implements Drawable, GameEntity,
         return (new Rectangle(0, 0, MapEntitySprite.RENDERING_SIZE, MapEntitySprite.RENDERING_SIZE));
     }
 
-    public Player.NUMBER getCurrentPlayer(){ return this.currentPlayer; }
+    public Player getCurrentPlayer(){ return this.currentPlayer; }
 
-    public void changeCurrentPlayer()
+    public void setCurrentPlayer(Player current)
     {
-        this.currentPlayer = (this.currentPlayer.name() == Player.NUMBER.ONE.name() ? Player.NUMBER.TWO : Player.NUMBER.ONE);
+        this.currentPlayer = current;
     }
 
     public void setMode(CursorMode m)

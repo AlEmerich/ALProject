@@ -94,7 +94,10 @@ public abstract class SoldierEntity extends GameMovable implements Drawable, Gam
     }
     public String getFilenameImage()
     {
-        return "bigSoldier.png";
+        if(this.owner.which() == Player.NUMBER.ONE)
+            return "bigRedSoldier.png";
+        else
+            return "bigBlueSoldier.png";
     }
     public String toString()
     {

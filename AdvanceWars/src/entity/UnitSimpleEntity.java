@@ -5,7 +5,6 @@ import game.SpriteManagerSoldierImpl;
 import gameframework.core.SpriteManager;
 import soldier.core.Unit;
 import soldier.core.UnitGroup;
-import util.ImageUtility;
 
 import java.awt.*;
 
@@ -76,6 +75,7 @@ public class UnitSimpleEntity extends SoldierEntity {
         this.owner.addInArmy(ug);
         UnitGroupEntity entity = new UnitGroupEntity(this.owner,this.canvas,ug);
         entity.setPosition(this.getPosition());
+        entity.getUnit().emptyMovementPoint();
         return entity;
     }
 

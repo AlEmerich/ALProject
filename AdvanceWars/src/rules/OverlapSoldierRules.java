@@ -41,23 +41,12 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
     public void information(Cursor cursor, SoldierEntity unit)
     {
         this.cursor = cursor;
-        if(loadInfo && cursor.getMode() == CursorMode.EXPLORE)
+        if( loadInfo || (!this.cursor.isOverlapUnit() && cursor.getMode() == CursorMode.EXPLORE))
         {
             cursor.showSoldierInformation(unit);
             loadInfo = false;
+            cursor.setOverlapUnit(true);
         }
-    }
-
-    public void fight(SoldierEntity attacker,SoldierEntity defender)
-    {
-        if(!attacker.getUnit().alive())
-            attacker.getOwner().removeInArmy(attacker.getUnit());
-        else
-        if(defender.getUnit().alive())
-            attacker.stepBackward();
-
-        if(!defender.getUnit().alive())
-            defender.getOwner().removeInArmy(defender.getUnit());
     }
 
     public void overlapRule(Cursor cursor, UnitSimpleEntity soldier)
@@ -76,7 +65,21 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
             strategyKeyboard.colorize();
         else
             strategyKeyboard.uncolorize();
-        loadInfo = true;
+    }
+
+
+    public void fight(SoldierEntity attacker,SoldierEntity defender)
+    {
+        if(!attacker.getUnit().alive())
+            attacker.getOwner().removeInArmy(attacker.getUnit());
+        else
+        if(defender.getUnit().alive())
+            attacker.stepBackward();
+
+        if(!defender.getUnit().alive())
+            defender.getOwner().removeInArmy(defender.getUnit());
+
+        attacker.getUnit().emptyMovementPoint();
     }
 
     public void overlapRule(UnitGroupEntity group,UnitSimpleEntity soldier)
@@ -94,7 +97,7 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
             group.getUnit().parry(soldier.getUnit().strike());
             soldier.getUnit().parry(group.getUnit().strike());
 
-            boolean firstParamIsAttack = (group.getOwner().which() == cursor.getCurrentPlayer() ?
+            boolean firstParamIsAttack = (group.getOwner().which() == cursor.getCurrentPlayer().which() ?
                     true : false);
             UnitSimpleEntity attacker = (firstParamIsAttack ? group : soldier);
             UnitSimpleEntity defender = (firstParamIsAttack ? soldier : group);
@@ -118,7 +121,7 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
             group1.getUnit().parry(group2.getUnit().strike());
             group2.getUnit().parry(group1.getUnit().strike());
 
-            boolean firstParamIsAttack = (group1.getOwner().which() == cursor.getCurrentPlayer() ?
+            boolean firstParamIsAttack = (group1.getOwner().which() == cursor.getCurrentPlayer().which() ?
                     true : false);
             UnitSimpleEntity attacker = (firstParamIsAttack ? group1 : group2);
             UnitSimpleEntity defender = (firstParamIsAttack ? group2 : group1);
@@ -146,7 +149,7 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
             soldier2.getUnit().parry(soldier.getUnit().strike());
             soldier.getUnit().parry(soldier2.getUnit().strike());
 
-            boolean firstParamIsAttack = (soldier.getOwner().which() == cursor.getCurrentPlayer() ?
+            boolean firstParamIsAttack = (soldier.getOwner().which() == cursor.getCurrentPlayer().which() ?
                     true : false);
             UnitSimpleEntity attacker = (firstParamIsAttack ? soldier : soldier2);
             UnitSimpleEntity defender = (firstParamIsAttack ? soldier2 : soldier);

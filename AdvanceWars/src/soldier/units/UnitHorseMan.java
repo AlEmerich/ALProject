@@ -15,7 +15,7 @@ public class UnitHorseMan extends UnitRider {
 	private static int MAX_MOVEMENT = 8;
 
 	public UnitHorseMan(String soldierName) {
-		super(soldierName, new BehaviorSoldierStd(20, 120));
+		super(soldierName, new BehaviorSoldierStd(120, 20));
 		this.currentMovementPoint = MAX_MOVEMENT;
 	}
 

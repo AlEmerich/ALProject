@@ -28,6 +28,12 @@ public abstract class UnitSimple extends ObservableAbstract<Unit>
 	}
 
 	@Override
+	public void emptyMovementPoint()
+	{
+		this.currentMovementPoint = 0;
+	}
+
+	@Override
     public void oneStep()
     {
         if(this.currentMovementPoint > 0)

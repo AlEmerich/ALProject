@@ -40,6 +40,7 @@ public class AdvanceWarsGame implements Game, Observer {
     protected Label currentLevel;
     protected Label currentLevelValue;
 
+    protected Container statusBar;
     public AdvanceWarsGame() {
 
         life = new ObservableValue[1];
@@ -57,12 +58,12 @@ public class AdvanceWarsGame implements Game, Observer {
         f.dispose();
 
         createMenuBar();
-        Container c = createStatusBar();
+        statusBar = createStatusBar();
 
         defaultCanvas = new CanvasDefaultImpl();
         defaultCanvas.setSize(SPRITE_SIZE * NB_COLUMNS, SPRITE_SIZE * NB_ROWS);
         f.add(defaultCanvas);
-        f.add(c, BorderLayout.NORTH);
+        f.add(statusBar, BorderLayout.NORTH);
         f.pack();
         f.setVisible(true);
 
@@ -118,6 +119,7 @@ public class AdvanceWarsGame implements Game, Observer {
         c.add(currentLevelValue);
         c.add(information);
         c.add(informationValue);
+        c.setBackground(Color.red);
         return c;
     }
 
@@ -217,7 +219,20 @@ public class AdvanceWarsGame implements Game, Observer {
                 }
             }
             if(o == player)
+            {
                 playerValue.setText(player.getValue());
+                if(player.getValue().equals("TWO")) {
+                    statusBar.setBackground(Color.blue);
+                    for(Component c : statusBar.getComponents())
+                        c.setBackground(Color.blue);
+                }
+                else
+                {
+                    statusBar.setBackground(Color.red);
+                    for(Component c : statusBar.getComponents())
+                        c.setBackground(Color.red);
+                }
+            }
         }
     }
 }

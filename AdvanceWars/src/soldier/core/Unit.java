@@ -22,6 +22,7 @@ public interface Unit extends Observable<Unit> {
 
 	default int getMaxMovementPoint(){return 5;}
 	int getMovementPoint();
+	void emptyMovementPoint();
 	void oneStep();
 	void resetMovementPoint();
 

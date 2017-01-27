@@ -4,7 +4,9 @@ import entity.Cursor;
 import gameframework.core.*;
 import soldier.util.UnitCounterVisitor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by alaguitard on 17/01/17.
@@ -21,14 +23,14 @@ public abstract class GameLevelTurnImpl extends GameLevelDefaultImpl {
     protected ObservableValue<Integer>[] life;
     boolean stopGameLoop;
     volatile boolean gameInPause;
-
-    protected Player playerOne;
-    protected Player playerTwo;
-
+    protected List<Player> players;
     protected abstract void init();
+
+
 
     public GameLevelTurnImpl(Game g) {
         super(g);
+        this.players = new ArrayList<>();
         this.g = g;
         this.player = ((AdvanceWarsGame) g).player();
         this.life = g.life();
@@ -58,12 +60,13 @@ public abstract class GameLevelTurnImpl extends GameLevelDefaultImpl {
 
             if(changePlayer())
             {
-                cursor.changeCurrentPlayer();
-                player.setValue(cursor.getCurrentPlayer().name());
+                int indexNext = (players.indexOf(cursor.getCurrentPlayer()) + 1) % players.size();
+                cursor.setCurrentPlayer(players.get(indexNext));
+                player.setValue(cursor.getCurrentPlayer().which().name());
             }
 
             UnitCounterVisitor visitor = new UnitCounterVisitor();
-            getCurrentPlayer().getArmy().accept(visitor);
+            cursor.getCurrentPlayer().getArmy().accept(visitor);
             life[0].setValue(visitor.aliveUnit);
             visitor.reset();
 
@@ -103,19 +106,12 @@ public abstract class GameLevelTurnImpl extends GameLevelDefaultImpl {
     protected void overlap_handler() {
     }
 
-    public Player getCurrentPlayer()
-    {
-        return (cursor.getCurrentPlayer().name() == Player.NUMBER.ONE.name() ? playerOne : playerTwo);
-    }
-
     public boolean changePlayer()
     {
-        Player current = getCurrentPlayer();
-
-        if(current.getArmy().getMovementPoint() > 0)
+        if(cursor.getCurrentPlayer().getArmy().getMovementPoint() > 0)
             return false;
 
-        current.beginTurn();
+        cursor.getCurrentPlayer().beginTurn();
         return true;
     }
 }

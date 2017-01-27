@@ -15,7 +15,7 @@ import java.util.Locale;
  */
 public class MenuSoldierStateFrame extends JDialog {
 
-    private SoldierEntity unit;
+    private SoldierEntity unit = null;
 
     JLabel titleLabel;
     JLabel iconPanel;
@@ -61,27 +61,36 @@ public class MenuSoldierStateFrame extends JDialog {
             }
         });
 
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this.getContentPane(),BoxLayout.LINE_AXIS));
 
+        JPanel rightPanel = new JPanel(new BorderLayout());
         // Title
         JPanel northPanel = new JPanel();
         northPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.titleLabel = new JLabel();
         northPanel.add(titleLabel);
-        this.add(northPanel,BorderLayout.NORTH);
+        rightPanel.add(northPanel,BorderLayout.NORTH);
 
         // Image
         JPanel westPanel = new JPanel();
         this.iconPanel = new JLabel();
         westPanel.add(iconPanel);
-        this.add(westPanel,BorderLayout.WEST);
+        this.add(westPanel);
 
         this.listPanel = new JPanel();
-        this.add(this.listPanel,BorderLayout.CENTER);
+        JScrollPane scroll = new JScrollPane(this.listPanel);
+        rightPanel.add(scroll,BorderLayout.CENTER);
+
+        this.add(rightPanel);
     }
 
     public void setUnit(SoldierEntity u)
     {
+        if(u == null)
+        {
+            this.unit = null;
+            return;
+        }
         this.listPanel.removeAll();
         this.setTitle(u.getUnit().getName());
         this.unit = u;
@@ -96,13 +105,12 @@ public class MenuSoldierStateFrame extends JDialog {
         this.unit.getUnit().accept(visitor);
         this.titleLabel.setText(this.unit.getUnit().getName()+" ATK "+ visitor.attack
                 + " HP " +String.format(Locale.US,"%.2f",visitor.health)
-                + " MP "+ visitor.movementPoint+"/"+visitor.maxMovement+"\n");
+                + " MP "+ visitor.movementPoint+"/"+visitor.maxMovement);
 
-        for(String s : visitor.soldiers)
-        {
-            this.listPanel.setLayout(new GridLayout(0,1));
-            this.listPanel.add(new JLabel(s));
-        }
+        //this.listPanel.setLayout(new GridLayout(0,1));
+        FlowLayout layout = new FlowLayout(FlowLayout.LEFT,-10,0);
+        this.listPanel.setLayout(layout);
+        this.listPanel.add(new JLabel(visitor.soldiers+"</ul></html>"));
     }
 
     public SoldierEntity getUnit()

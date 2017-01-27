@@ -2,9 +2,7 @@ package soldier.util;
 
 import soldier.core.*;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -15,12 +13,14 @@ public class AttributUnitVisitor implements UnitVisitor {
     public float health;
     public int movementPoint;
     public int maxMovement;
+    public String weapons;
 
-    public List<String> soldiers;
+    public String soldiers;
 
     public AttributUnitVisitor()
     {
-        soldiers = new ArrayList<>();
+        soldiers = "<html><ul>";
+
         clear();
     }
 
@@ -44,10 +44,16 @@ public class AttributUnitVisitor implements UnitVisitor {
         health += ur.getHealthPoints();
         movementPoint += ur.getMovementPoint();
         maxMovement += ur.getMaxMovementPoint();
+        this.weapons = " Weapon ";
+        for(Iterator<Weapon> it = ur.getWeapons(); it.hasNext(); )
+        {
+            weapons += it.next().getName()+" ";
 
-        soldiers.add(" ---->"+ ur.getName()+" A "+ ur.strike()
-                + " HP " + String.format(Locale.US,"%.2f",ur.getHealthPoints())
-                + " MP "+ ur.getMovementPoint()+"/"+ur.getMaxMovementPoint()+"\n");
+        }
+        soldiers += "<li> "+ ur.getName()+" ATK "+ ur.strike()
+                + weapons
+                + " <br> HP " + String.format(Locale.US,"%.2f",ur.getHealthPoints())
+                + " MP "+ ur.getMovementPoint()+"/"+ur.getMaxMovementPoint()+"</li>";
     }
 
     @Override
@@ -56,8 +62,15 @@ public class AttributUnitVisitor implements UnitVisitor {
         health += ui.getHealthPoints();
         movementPoint += ui.getMovementPoint();
         maxMovement += ui.getMaxMovementPoint();
+        this.weapons = " Weapon ";
+        for(Iterator<Weapon> it = ui.getWeapons(); it.hasNext(); )
+        {
+            weapons += it.next().getName()+" ";
 
-        soldiers.add(" ---->"+ ui.getName()+" A "+ ui.strike() + " HP " + ui.getHealthPoints()
-                + " MP "+ui.getMovementPoint()+"/"+ui.getMaxMovementPoint()+"\n");
+        }
+        soldiers += "<li>"+ ui.getName()+" ATK "
+                + weapons
+                + ui.strike() + " <br> HP " + ui.getHealthPoints()
+                + " MP "+ui.getMovementPoint()+"/"+ui.getMaxMovementPoint()+"</li>";
     }
 }

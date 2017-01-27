@@ -13,7 +13,7 @@ public class UnitRobot extends UnitInfantry {
 	private static int MAX_MOVEMENT = 6;
 
 	public UnitRobot(String soldierName) {
-		super(soldierName, new BehaviorSoldierHealthBased( 50, 100));
+		super(soldierName, new BehaviorSoldierHealthBased( 100, 50));
 		this.currentMovementPoint = MAX_MOVEMENT;
 	}
 

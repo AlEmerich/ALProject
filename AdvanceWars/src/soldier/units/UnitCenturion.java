@@ -11,10 +11,10 @@ import soldier.core.Weapon;
 
 public class UnitCenturion extends UnitInfantry {
 
-	private static int MAX_MOVEMENT = 1;
+	private static int MAX_MOVEMENT = 6;
 
 	public UnitCenturion(String soldierName) {
-		super(soldierName, new BehaviorSoldierStd(15, 100));
+		super(soldierName, new BehaviorSoldierStd(100, 15));
 		this.currentMovementPoint = MAX_MOVEMENT;
 	}
 
