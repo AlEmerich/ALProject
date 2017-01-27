@@ -170,9 +170,7 @@ public class OverlapSoldierRules extends OverlapRulesApplierDefaultImpl {
             soldier.getUnit().addEquipment(weapon.isShield() ? factory.defenseWeapon() : factory.attackWeapon());
             this.universe.removeGameEntity(weapon);
         }
-        catch (BreakingRuleException e)
-        {
-
+        catch (BreakingRuleException e) {
         }
     }
 

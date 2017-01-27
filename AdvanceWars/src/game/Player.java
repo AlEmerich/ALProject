@@ -28,6 +28,7 @@ public class Player {
         {
             this.upx = upx;
             this.downy = downy;
+            this.title = title;
         }
 
         @Override
